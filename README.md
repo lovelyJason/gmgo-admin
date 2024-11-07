@@ -17,7 +17,7 @@
 
 [在线文档](https://www.go-admin.pro): 这是go-admin项目的文档，本项目基于它，但是更换了数据库驱动，所以部分地方会略有不同，请看后文的数据库初始化
 
-[前端项目](https://github.com/go-admin-team/go-admin-ui)
+[前端项目](https://github.com/lovelyJason/gmgo-antd-ui)
 
 ## 写在前面
 
