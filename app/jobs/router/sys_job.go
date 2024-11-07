@@ -27,9 +27,9 @@ func registerSysJobRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddlew
 		r.GET("/:id", actions.PermissionAction(), actions.ViewAction(new(dto2.SysJobById), func() interface{} {
 			return &dto2.SysJobItem{}
 		}))
-		r.POST("", actions.CreateAction(new(dto2.SysJobControl)))
-		r.PUT("", actions.PermissionAction(), actions.UpdateAction(new(dto2.SysJobControl)))
-		r.DELETE("", actions.PermissionAction(), actions.DeleteAction(new(dto2.SysJobById)))
+		r.POST("/add", actions.CreateAction(new(dto2.SysJobControl)))
+		r.POST("/edit", actions.PermissionAction(), actions.UpdateAction(new(dto2.SysJobControl)))
+		r.POST("/del", actions.PermissionAction(), actions.DeleteAction(new(dto2.SysJobById)))
 	}
 	sysJob := apis.SysJob{}
 

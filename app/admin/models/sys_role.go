@@ -99,6 +99,50 @@ func (e *SysRole) Count(ctx context.Context, db *mongo.Database, filter bson.M, 
 	return nil
 }
 
+func (e *SysRole) GetOne(ctx context.Context, db *mongo.Database, filter bson.M, data *SysRole) error {
+	menuMoldel := models.SysMenu{}
+	pipeline := mongo.Pipeline{
+		{
+			{"$match", filter}, // 匹配角色ID
+		},
+		{
+			{"$lookup", bson.M{
+				"from":         menuMoldel.TableName(), // 关联的集合
+				"localField":   "menus",                // sysRole 中的字段
+				"foreignField": "_id",                  // sysMenu 中的字段
+				"as":           "sysMenu",              // 输出字段名称
+			}},
+		},
+		{
+			{"$addFields", bson.M{
+				"sysMenu": bson.M{"$ifNull": []interface{}{"$sysMenu", []interface{}{}}}, // 如果没有找到 sysApi，则设置为空数组
+			}},
+		},
+	}
+	collection := db.Collection(e.TableName())
+	cursor, err := collection.Aggregate(ctx, pipeline)
+	if err != nil {
+		return err
+	}
+	defer cursor.Close(ctx)
+	if err != nil {
+		return err
+	}
+	if cursor.Next(ctx) {
+		if err := cursor.Decode(data); err != nil {
+			fmt.Printf("Decoded sysMenu: %+v\n", data.SysMenu)
+
+			return err
+		}
+
+		// 调试输出
+		fmt.Printf("Decoded data: %+v\n", data)
+	} else {
+		return mongo.ErrNoDocuments // 如果没有找到文档
+	}
+	return nil
+}
+
 func (e *SysRole) GetOneByRoleId(ctx context.Context, db *mongo.Database, roleId int, data *SysRole) error {
 	menuMoldel := models.SysMenu{}
 	pipeline := mongo.Pipeline{

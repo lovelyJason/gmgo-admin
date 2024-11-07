@@ -33,7 +33,7 @@ func InitSysRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.Rou
 }
 
 func sysBaseRouter(r *gin.RouterGroup) {
-
+	//后台任务，独立运行的服务，负责 WebSocket 连接的管理、消息的发送、客户端的注册和注销等
 	go ws.WebsocketManager.Start()
 	go ws.WebsocketManager.SendService()
 	go ws.WebsocketManager.SendAllService()
@@ -60,10 +60,26 @@ func sysSwaggerRouter(r *gin.RouterGroup) {
 }
 
 func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+	// 前端js的websocket无法设置请求头https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api， 只有服务端请求服务端的环境才能自由携带头部
 	wss := r.Group("").Use(authMiddleware.MiddlewareFunc())
 	{
-		wss.GET("/ws/:id/:channel", ws.WebsocketManager.WsClient)
-		wss.GET("/wslogout/:id/:channel", ws.WebsocketManager.UnWsClient)
+		// 创建websocket链接
+		wss.GET("/ws/:id/:channel", func(c *gin.Context) {
+			ws.WebsocketManager.WsClient(c, authMiddleware, 1)
+		})
+		wss.GET("/wslogout/:id/:channel", func(c *gin.Context) {
+			ws.WebsocketManager.UnWsClient(c, authMiddleware, 1)
+		})
+	}
+	wss2 := r.Group("/ws2")
+	// 只能传递jwt.New的鉴权中间件实例进去，因为内部依赖mw的鉴权token
+	{
+		wss2.GET("/ws/:id/:channel", func(c *gin.Context) {
+			ws.WebsocketManager.WsClient(c, authMiddleware, 2)
+		})
+		wss2.GET("/wslogout/:id/:channel", func(c *gin.Context) {
+			ws.WebsocketManager.UnWsClient(c, authMiddleware, 2)
+		})
 	}
 
 	v1 := r.Group("/api/v1")

@@ -176,19 +176,14 @@ func (e *SysUser) UpdateAvatar(c *dto.UpdateSysUserAvatarReq, p *actions.DataPer
 // UpdateStatus 更新用户状态
 func (e *SysUser) UpdateStatus(c *dto.UpdateSysUserStatusReq, p *actions.DataPermission) error {
 	var err error
-	var model models.SysUser
-	db := e.Orm.Scopes(
-		actions.Permission(model.TableName(), p),
-	).First(&model, c.GetId())
-	if err = db.Error; err != nil {
-		e.Log.Errorf("Service UpdateSysUser error: %s", err)
-		return err
+	ctx := context.Background()
+	userModel := &models.SysUser{}
+	filter := bson.M{
+		"status":    c.Status,
+		"updateBy":  c.UpdateBy,
+		"updatedAt": time.Now(),
 	}
-	if db.RowsAffected == 0 {
-		return errors.New("无权更新该数据")
-
-	}
-	err = e.Orm.Table(model.TableName()).Where("user_id =? ", c.UserId).Updates(c).Error
+	err = userModel.UpdateByUserId(ctx, e.Mongo, c.GetId(), filter)
 	if err != nil {
 		e.Log.Errorf("Service UpdateSysUser error: %s", err)
 		return err
@@ -212,7 +207,7 @@ func (e *SysUser) ResetPwd(c *dto.ResetSysUserPwdReq, p *actions.DataPermission)
 	filter := bson.M{
 		"password": string(encryptedPassword),
 	}
-	userModel.UpdateByUserId(ctx, e.Mongo, c.GetId(), filter)
+	err = userModel.UpdateByUserId(ctx, e.Mongo, c.GetId(), filter)
 	if err != nil {
 		e.Log.Errorf("At Service ResetSysUserPwd error: %s", err)
 		return err

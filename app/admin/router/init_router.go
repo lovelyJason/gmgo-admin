@@ -25,7 +25,7 @@ func InitRouter() {
 		os.Exit(-1)
 	}
 
-	// the jwt middleware
+	// jwt中间件：创建jwt token的地方
 	authMiddleware, err := common.AuthInit()
 	if err != nil {
 		log.Fatalf("JWT Init Error, %s", err.Error())
@@ -36,5 +36,5 @@ func InitRouter() {
 
 	// 注册业务路由
 	// TODO: 这里可存放业务路由，里边并无实际路由只有演示代码
-	InitExamplesRouter(r, authMiddleware)
+	InitBusinessRouter(r, authMiddleware)
 }

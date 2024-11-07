@@ -12,18 +12,18 @@ var (
 	routerCheckRole   = make([]func(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware), 0)
 )
 
-func InitExamplesRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.Engine {
+func InitBusinessRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.Engine {
 
 	// 无需认证的路由
-	examplesNoCheckRoleRouter(r)
+	businessNoCheckRoleRouter(r)
 	// 需要认证的路由
-	examplesCheckRoleRouter(r, authMiddleware)
+	businessCheckRoleRouter(r, authMiddleware)
 
 	return r
 }
 
 // 无需认证的路由示例
-func examplesNoCheckRoleRouter(r *gin.Engine) {
+func businessNoCheckRoleRouter(r *gin.Engine) {
 	// 可根据业务需求来设置接口版本
 	v1 := r.Group("/api/v1")
 	for _, f := range routerNoCheckRole {
@@ -32,7 +32,7 @@ func examplesNoCheckRoleRouter(r *gin.Engine) {
 }
 
 // 需要认证的路由示例
-func examplesCheckRoleRouter(r *gin.Engine, authMiddleware *jwtauth.GinJWTMiddleware) {
+func businessCheckRoleRouter(r *gin.Engine, authMiddleware *jwtauth.GinJWTMiddleware) {
 	// 可根据业务需求来设置接口版本
 	v1 := r.Group("/api/v1")
 	for _, f := range routerCheckRole {

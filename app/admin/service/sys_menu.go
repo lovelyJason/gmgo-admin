@@ -317,6 +317,7 @@ func menuCall(menuList *[]models.SysMenu, menu models.SysMenu) models.SysMenu {
 			continue
 		}
 		mi := models.SysMenu{}
+		mi.Id = list[i].Id
 		mi.MenuId = list[i].MenuId
 		mi.MenuName = list[i].MenuName
 		mi.Title = list[i].Title
@@ -359,17 +360,28 @@ func menuDistinct(menuList []models.SysMenu) (result []models.SysMenu) {
 	return result
 }
 
-func recursiveSetMenu(orm *gorm.DB, mIds []int, menus *[]models.SysMenu) error {
+func recursiveSetMenu(db *mongo.Database, mIds []int, menus *[]models.SysMenu) error {
 	if len(mIds) == 0 || menus == nil {
 		return nil
 	}
+	menuModel := &models.SysMenu{}
+	// 构建查询条件
+	filter := bson.M{
+		"menuType": bson.M{"$in": []string{cModels.Directory, cModels.Menu, cModels.Button}},
+		"menuId":   bson.M{"$in": mIds}, // 查找 menu_id 在给定列表中的文档
+	}
+
+	// 查找菜单
 	var subMenus []models.SysMenu
-	err := orm.Where(fmt.Sprintf(" menu_type in ('%s', '%s', '%s') and menu_id in ?",
-		cModels.Directory, cModels.Menu, cModels.Button), mIds).Order("sort").Find(&subMenus).Error
+	cursor, err := db.Collection(menuModel.TableName()).Find(context.Background(), filter)
 	if err != nil {
 		return err
 	}
+	defer cursor.Close(context.Background())
 
+	if err := cursor.All(context.Background(), &subMenus); err != nil {
+		return err
+	}
 	subIds := make([]int, 0)
 	for _, menu := range subMenus {
 		if menu.ParentId != 0 {
@@ -379,7 +391,7 @@ func recursiveSetMenu(orm *gorm.DB, mIds []int, menus *[]models.SysMenu) error {
 			*menus = append(*menus, menu)
 		}
 	}
-	return recursiveSetMenu(orm, subIds, menus)
+	return recursiveSetMenu(db, subIds, menus)
 }
 
 // SetMenuRole 获取左侧菜单树使用
@@ -397,59 +409,45 @@ func (e *SysMenu) SetMenuRole(roleName string) (m []models.SysMenu, err error) {
 }
 
 func (e *SysMenu) getByRoleName(roleName string) ([]models.SysMenu, error) {
-	//var role models.SysRole
-	//var err error
-	//data := make([]models.SysMenu, 0)
-	//
-	//if roleName == "admin" {
-	//	err = e.Orm.Where(" menu_type in ('M','C') and deleted_at is null").
-	//		Order("sort").
-	//		Find(&data).
-	//		Error
-	//	err = errors.WithStack(err)
-	//} else {
-	//	role.RoleKey = roleName
-	//	err = e.Orm.Model(&role).Where("role_key = ? ", roleName).Preload("SysMenu").First(&role).Error
-	//
-	//	if role.SysMenu != nil {
-	//		mIds := make([]int, 0)
-	//		for _, menu := range *role.SysMenu {
-	//			mIds = append(mIds, menu.MenuId)
-	//		}
-	//		if err := recursiveSetMenu(e.Orm, mIds, &data); err != nil {
-	//			return nil, err
-	//		}
-	//
-	//		data = menuDistinct(data)
-	//	}
-	//}
-	//
-	//sort.Sort(models.SysMenuSlice(data))
-	//return data, err
-	// ===================
-	//var sysMenuModel models.SysMenu
-	//var sysRoleModel models.SysRole
 	var data []models.SysMenu
-	//var err error
+	roleModel := &models.SysRole{}
+	var err error
 
 	ctx := context.Background() // 创建一个上下文
-	// TODO: 要根据sysRoleMenu表聚合查询查到普通角色的菜单返回，这里先跟管理员一样
-	//if roleName == "admin" {
-	filter := bson.M{
-		"menuType":  bson.M{"$in": []string{"M", "C"}},
-		"deletedAt": nil,
-	}
-	cursor, err := e.Mongo.Collection("sysMenu").Find(ctx, filter, options.Find().SetSort(bson.M{"sort": 1}))
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(ctx)
+	// 根据sysRoleMenu表聚合查询查到普通角色的菜单返回
+	if roleName == "admin" {
+		filter := bson.M{
+			"menuType":  bson.M{"$in": []string{"M", "C"}},
+			"deletedAt": nil,
+		}
+		cursor, err := e.Mongo.Collection("sysMenu").Find(ctx, filter, options.Find().SetSort(bson.M{"sort": 1}))
+		if err != nil {
+			return nil, err
+		}
+		defer cursor.Close(ctx)
 
-	if err = cursor.All(ctx, &data); err != nil {
-		return nil, err
+		if err = cursor.All(ctx, &data); err != nil {
+			return nil, err
+		}
+	} else {
+		filter := bson.M{
+			"roleKey": roleName,
+		}
+		err = roleModel.GetOne(ctx, e.Mongo, filter, roleModel)
+		if roleModel.SysMenu != nil {
+			mIds := make([]int, 0)
+			for _, menu := range *roleModel.SysMenu {
+				mIds = append(mIds, menu.MenuId)
+			}
+
+			if err := recursiveSetMenu(e.Mongo, mIds, &data); err != nil {
+				return nil, err
+			}
+
+			data = menuDistinct(data)
+		}
 	}
-	//}
 
 	sort.Sort(models.SysMenuSlice(data))
-	return data, nil
+	return data, err
 }

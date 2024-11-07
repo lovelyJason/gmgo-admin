@@ -2,7 +2,10 @@ package ws
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	jwtauth "github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth"
+	jwt "github.com/golang-jwt/jwt/v4"
 	"log"
 	"net/http"
 	"sync"
@@ -10,8 +13,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-
-	"github.com/go-admin-team/go-admin-core/sdk/pkg"
 )
 
 // Manager 所有 websocket 信息
@@ -271,7 +272,31 @@ var WebsocketManager = Manager{
 }
 
 // gin 处理 websocket handler
-func (manager *Manager) WsClient(c *gin.Context) {
+func (manager *Manager) WsClient(c *gin.Context, mw *jwtauth.GinJWTMiddleware, kind int) {
+	if kind == 2 {
+		tokenStr := c.Query("token")
+		if tokenStr == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token is required"})
+			return
+		}
+		//	TODO: copy middlewareImpl里那段鉴权代码
+		token, err := mw.ParseTokenString(tokenStr)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token is illegal"})
+			return
+		}
+		claims := jwtauth.MapClaims(token.Claims.(jwt.MapClaims))
+		exp, err := claims.Exp()
+		if err != nil {
+			c.JSON(http.StatusBadRequest, mw.HTTPStatusMessageFunc(err, c))
+			return
+		}
+		if exp < mw.TimeFunc().Unix() {
+			c.JSON(http.StatusUnauthorized, mw.HTTPStatusMessageFunc(errors.New("token is expired"), c))
+			return
+		}
+
+	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -290,7 +315,7 @@ func (manager *Manager) WsClient(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("token: ", c.Query("token"))
+	fmt.Println("tokenStr: ", c.Query("token"))
 
 	client := &Client{
 		Id:         c.Param("id"),
@@ -306,10 +331,10 @@ func (manager *Manager) WsClient(c *gin.Context) {
 	go client.Write(ctx)
 	time.Sleep(time.Second * 15)
 
-	pkg.FileMonitoringById(ctx, "temp/logs/job/db-20200820.log", c.Param("id"), c.Param("channel"), SendOne)
+	//pkg.FileMonitoringById(ctx, "temp/logs/job/db-20200820.log", c.Param("id"), c.Param("channel"), SendOne)
 }
 
-func (manager *Manager) UnWsClient(c *gin.Context) {
+func (manager *Manager) UnWsClient(c *gin.Context, authMiddleware *jwtauth.GinJWTMiddleware, kind int) {
 	id := c.Param("id")
 	group := c.Param("channel")
 	WsLogout(id, group)

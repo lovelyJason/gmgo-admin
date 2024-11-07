@@ -402,18 +402,21 @@ func (mw *GinJWTMiddleware) middlewareImpl(c *gin.Context) {
 		panic("数据库链接失败")
 	}
 
+	// 校验是否在黑名单，如退出登录
 	jwtService := &JwtService{}
 	if jwtService.IsBlacklist(c, token, db) {
 		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(errors.New("您的帐户异地登陆或令牌失效"), c))
 		return
 	}
 
+	// 校验是否合法token
 	claims, err := mw.GetClaimsFromJWT(c)
 	if err != nil {
 		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(err, c))
 		return
 	}
 
+	// 校验token是否过期
 	exp, err := claims.Exp()
 	if err != nil {
 		mw.unauthorized(c, http.StatusBadRequest, mw.HTTPStatusMessageFunc(err, c))
@@ -459,7 +462,7 @@ func (mw *GinJWTMiddleware) GetClaimsFromJWT(c *gin.Context) (MapClaims, error) 
 // LoginHandler can be used by clients to get a jwt token.
 // Payload needs to be json in the form of {"username": "USERNAME", "password": "PASSWORD"}.
 // Reply will be of the form {"token": "TOKEN"}.
-// api/v1/login
+// /api/v1/login
 func (mw *GinJWTMiddleware) LoginHandler(c *gin.Context) {
 	if mw.Authenticator == nil {
 		mw.unauthorized(c, http.StatusInternalServerError, mw.HTTPStatusMessageFunc(ErrMissingAuthenticatorFunc, c))
@@ -721,7 +724,7 @@ func (mw *GinJWTMiddleware) ParseToken(c *gin.Context) (*jwt.Token, error) {
 	}, jwt.WithJSONNumber())
 }
 
-// ParseTokenString parse jwt token string
+// ParseTokenString parse jwt token string：校验token合法性
 func (mw *GinJWTMiddleware) ParseTokenString(token string) (*jwt.Token, error) {
 	return jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if jwt.GetSigningMethod(mw.SigningAlgorithm) != t.Method {

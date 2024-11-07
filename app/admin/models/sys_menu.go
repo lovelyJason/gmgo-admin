@@ -9,7 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
 
@@ -73,6 +72,7 @@ func (e *SysMenu) List(ctx context.Context, db *mongo.Database, filter bson.M, p
 	//if filter["visible"] != "" {
 	//	query["visible"] = filter["visible"]
 	//}
+	apiModel := &models.SysApi{}
 	if pageIndex <= 0 {
 		pageIndex = 1 // 默认值
 	}
@@ -85,13 +85,41 @@ func (e *SysMenu) List(ctx context.Context, db *mongo.Database, filter bson.M, p
 	}
 	skip := (pageIndex - 1) * pageSize
 
-	findOptions := options.Find()
-	findOptions.SetSkip(int64(skip))
-	findOptions.SetLimit(int64(pageSize))
-	findOptions.SetSort(bson.M{"sort": 1})
-	//log.Println("roleId", query["roleId"])
+	//findOptions := options.Find()
+	//findOptions.SetSkip(int64(skip))
+	//findOptions.SetLimit(int64(pageSize))
+	//findOptions.SetSort(bson.M{"sort": 1})
 
-	cursor, err := db.Collection(e.TableName()).Find(ctx, filter, findOptions)
+	//cursor, err := db.Collection(e.TableName()).Find(ctx, filter, findOptions)
+	pipeline := mongo.Pipeline{
+		{
+			{"$match", filter}, // 匹配菜单ID
+		},
+		{
+			{"$lookup", bson.M{
+				"from":         apiModel.TableName(), // 关联的集合
+				"localField":   "apis",               // sysMenu 中的字段
+				"foreignField": "_id",                // sysApi 中的字段
+				"as":           "sysApi",             // 输出字段名称
+			}},
+		},
+		{
+			{"$addFields", bson.M{
+				"sysApi": bson.M{"$ifNull": []interface{}{"$sysApi", []interface{}{}}}, // 如果没有找到 sysApi，则设置为空数组
+			}},
+		},
+		// 分页操作：跳过指定数量的文档
+		{{"$skip", int64(skip)}},
+
+		// 限制查询结果的数量
+		{{"$limit", int64(pageSize)}},
+
+		// 排序操作
+		{{"$sort", bson.M{"sort": 1}}},
+	}
+
+	// 执行聚合查询
+	cursor, err := db.Collection(e.TableName()).Aggregate(ctx, pipeline)
 	if err != nil {
 		return err
 	}

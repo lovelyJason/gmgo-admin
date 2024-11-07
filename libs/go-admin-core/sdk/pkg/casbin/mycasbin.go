@@ -2,6 +2,7 @@ package mycasbin
 
 import (
 	"errors"
+	mongoAdapter "github.com/casbin/mongodb-adapter/v3"
 	"sync"
 
 	"github.com/casbin/casbin/v2"
@@ -14,7 +15,6 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
-	mongoAdapter "github.com/casbin/mongodb-adapter/v3"
 	gormAdapter "github.com/go-admin-team/gorm-adapter/v3"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -43,34 +43,57 @@ func SetupWithMongo(options *options.ClientOptions, dbName string) *casbin.Synce
 	if dbName == "" {
 		panic(errors.New("MongoDB database name cannot be empty"))
 	}
+	once.Do(func() {
+		// 选择适配器
+		apter, err := mongoAdapter.NewAdapterWithClientOption(options, dbName) // 好像mongo的这个adapter不支持指定集合名称，只能是casbin_rule
+		if err != nil {
+			panic(err)
+		}
 
-	// 选择适配器
-	apter, err := mongoAdapter.NewAdapterWithClientOption(options, dbName)
-	if err != nil {
-		panic(err)
-	}
+		// 加载模型
+		m, err := model.NewModelFromString(text)
+		if err != nil {
+			panic(err)
+		}
 
-	// 加载模型
-	m, err := model.NewModelFromString(text)
-	if err != nil {
-		panic(err)
-	}
+		// 初始化 Enforcer
+		enforcer, err = casbin.NewSyncedEnforcer(m, apter)
+		if err != nil {
+			panic(err)
+		}
 
-	// 初始化 Enforcer
-	enforcer, err := casbin.NewSyncedEnforcer(m, apter)
-	if err != nil {
-		panic(err)
-	}
+		// 加载策略
+		err = enforcer.LoadPolicy()
+		if err != nil {
+			panic(err)
+		}
 
-	// 加载策略
-	err = enforcer.LoadPolicy()
-	if err != nil {
-		panic(err)
-	}
+		// 启用日志
+		log.SetLogger(&Logger{})
+		enforcer.EnableLog(true)
 
-	// 启用日志
-	log.SetLogger(&Logger{})
-	enforcer.EnableLog(true)
+		// ================测试数据 添加一条策略（例如：角色 admin 对 /api/v1/sys-user 有 GET 权限）
+		//policy := []string{"admin", "/api/v1/sys-tet", "GET"}
+		//_, err = enforcer.AddNamedPolicy("p", policy)
+		//if err != nil {
+		//	fmt.Println("Error adding policy:", err)
+		//} else {
+		//	fmt.Println("Policy added successfully")
+		//}
+		//
+		//// 检查当前策略是否正确添加
+		//policies := enforcer.GetPolicy()
+		//fmt.Println("Current policies:", policies)
+		//
+		//// 保存策略到数据库
+		//err = enforcer.SavePolicy()
+		//if err != nil {
+		//	fmt.Println("Error saving policy:", err)
+		//} else {
+		//	fmt.Println("Policies saved successfully")
+		//}
+		// ============================
+	})
 
 	return enforcer
 }

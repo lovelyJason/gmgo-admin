@@ -252,13 +252,13 @@ func (e SysUser) InsetAvatar(c *gin.Context) {
 // @Product application/json
 // @Param data body dto.UpdateSysUserStatusReq true "body"
 // @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /api/v1/user/status [put]
+// @Router /api/v1/user/status [post]
 // @Security Bearer
 func (e SysUser) UpdateStatus(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.UpdateSysUserStatusReq{}
 	err := e.MakeContext(c).
-		MakeOrm().
+		MakeMongo().
 		Bind(&req, binding.JSON, nil).
 		MakeService(&s.Service).
 		Errors
@@ -432,6 +432,7 @@ func (e SysUser) GetInfo(c *gin.Context) {
 		mp["permissions"] = permissions
 		mp["buttons"] = buttons
 	} else {
+		// 列出来该角色在roleMenu关联表中对应的所有菜单项的id在菜单表查到的permission字符串组成的数组
 		list, _ := roleService.GetById(user.GetRoleId(c))
 		mp["permissions"] = list
 		mp["buttons"] = list

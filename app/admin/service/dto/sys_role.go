@@ -78,12 +78,14 @@ func (s *SysRoleInsertReq) GenerateBson() bson.M {
 	filter["flag"] = s.Flag
 	filter["remark"] = s.Remark
 	filter["dataScope"] = s.DataScope
+	filter["menus"] = s.Menus
 	//model.Admin = s.Admin // 不能让前端决定是否管理员
 	//model.DataScope = s.DataScope
 	//model.SysMenu = &s.SysMenu
 	//model.SysDept = s.SysDept
 	if s.CreateBy != 0 {
 		filter["createBy"] = s.CreateBy
+		filter["createdAt"] = time.Now()
 	}
 	if s.UpdateBy != 0 {
 		filter["updateBy"] = s.UpdateBy

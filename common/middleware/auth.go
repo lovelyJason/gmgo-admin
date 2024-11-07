@@ -10,6 +10,7 @@ import (
 
 // AuthInit jwt验证new
 func AuthInit() (*jwt.GinJWTMiddleware, error) {
+	// 让开发环境的token永久不过期
 	timeout := time.Hour
 	if config.ApplicationConfig.Mode == "dev" {
 		timeout = time.Duration(876010) * time.Hour

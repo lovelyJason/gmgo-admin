@@ -59,7 +59,7 @@ func setupSimpleDatabase(host string, c *toolsConfig.Database) {
 		db := client.Database(c.Db)
 		sdk.Runtime.SetMongoDb(host, db)
 
-		e := mycasbin.SetupWithMongo(mongoClientOptions, "sysCasbinRule")
+		e := mycasbin.SetupWithMongo(mongoClientOptions, c.Db)
 		sdk.Runtime.SetCasbin(host, e)
 	} else {
 		registers := make([]toolsDB.ResolverConfigure, len(c.Registers))

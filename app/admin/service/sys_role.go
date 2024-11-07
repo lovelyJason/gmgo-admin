@@ -5,7 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"time"
 
 	"github.com/go-admin-team/go-admin-core/sdk/config"
 	"gorm.io/gorm/clause"
@@ -21,6 +24,12 @@ import (
 
 type SysRole struct {
 	service.Service
+}
+
+type RoleMenuResult struct {
+	Title       string          `bson:"title"`
+	Permission  string          `bson:"permission"`
+	ApisDetails []models.SysApi `bson:"apisDetails"`
 }
 
 // GetPage 获取SysRole列表
@@ -100,7 +109,7 @@ func (e *SysRole) Insert(c *dto.SysRoleInsertReq, cb *casbin.SyncedEnforcer) err
 	menuFilter := bson.M{
 		"_id": bson.M{"$in": c.Menus},
 	}
-	err = menuModel.List(ctx, e.Mongo, menuFilter, 0, 0, &dataMenu)
+	err = menuModel.List(ctx, e.Mongo, menuFilter, 0, 0, &dataMenu) // 拉取请求参数菜单id对应的菜单表数据列表，最重要的是要拉取到SysApi
 	if err != nil {
 		e.Log.Errorf("db error:%s", err)
 		return err
@@ -162,11 +171,84 @@ func (e *SysRole) Insert(c *dto.SysRoleInsertReq, cb *casbin.SyncedEnforcer) err
 	return nil
 }
 
+func getRoleMenuResults(c *mongo.Collection, menus []primitive.ObjectID) ([]RoleMenuResult, error) {
+	pipeline := mongo.Pipeline{
+		{
+			{"$match", bson.D{
+				{"menus", bson.D{
+					{"$in", menus},
+				}},
+			}},
+		},
+		{
+			{"$lookup", bson.D{
+				{"from", "sysMenu"},
+				{"localField", "menus"},
+				{"foreignField", "_id"},
+				{"as", "menu_details"},
+			}},
+		},
+		{
+			{"$unwind", "$menu_details"},
+		},
+		{
+			{"$match", bson.D{
+				{"menu_details.permission", bson.D{{"$ne", nil}}},
+			}},
+		},
+		{
+			{"$project", bson.D{
+				{"_id", 0},
+				{"title", "$menu_details.title"},
+				{"permission", "$menu_details.permission"},
+				{"apis", "$menu_details.apis"},
+			}},
+		},
+		{
+			{"$lookup", bson.D{
+				{"from", "sysApi"},
+				{"localField", "apis"},
+				{"foreignField", "_id"},
+				{"as", "apisDetails"},
+			}},
+		},
+		{
+			{"$project", bson.D{
+				{"title", 1},
+				{"permission", 1},
+				{"apisDetails", 1},
+			}},
+		},
+	}
+
+	// 执行聚合查询
+	cursor, err := c.Aggregate(context.Background(), pipeline)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	// 存储查询结果
+	var results []RoleMenuResult
+	for cursor.Next(context.Background()) {
+		var result RoleMenuResult
+		if err := cursor.Decode(&result); err != nil {
+			return nil, err
+		}
+		results = append(results, result)
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
 // Update 修改SysRole对象
 func (e *SysRole) Update(c *dto.SysRoleUpdateReq, cb *casbin.SyncedEnforcer) error {
 	var err error
 	var model = models.SysRole{}
-	var mlist = make([]models.SysMenu, 0)
 	//tx.Preload("SysMenu").First(&model, c.GetId())                      // 预加载了SysRole模型中的SysMenu关联。这意味着通过roleId查询一个SysRole实例时，GORM会自动查询并填充与该角色相关联的所有菜单（SysMenu）
 	//tx.Preload("SysApi").Where("menu_id in ?", c.MenuIds).Find(&mlist)  // SysMenu模型中的SysApi关联.many2many:sys_menu_api_rule。查询SysMenu实例时，自动查询并填充与该菜单相关联的所有API（SysApi）,存到mlist。结果：sysMenu.SysApi
 	//err = tx.Model(&model).Association("SysMenu").Delete(model.SysMenu) // Association: 这个方法用于访问角色模型的关联SysMenu:从sys_role_menu这样的多对多关联表中删除了相应的记录model.SysMenu
@@ -184,17 +266,19 @@ func (e *SysRole) Update(c *dto.SysRoleUpdateReq, cb *casbin.SyncedEnforcer) err
 		e.Log.Errorf("db error:%s", err)
 		return err
 	}
-	// TODO:POLICY重构
 	// 清除 sys_casbin_rule 权限表里 当前角色的所有记录
 	_, err = cb.RemoveFilteredPolicy(0, model.RoleKey)
 	if err != nil {
 		e.Log.Errorf("delete policy error:%s", err)
 		return err
 	}
+	// 生成apis策略表
+	menusWithApis, err := getRoleMenuResults(e.Mongo.Collection(roleModel.TableName()), c.Menus)
+
 	mp := make(map[string]interface{}, 0)
-	polices := make([][]string, 0) // 类似于["角色名称", "/api/v1/sys-user", "GET"]
-	for _, menu := range mlist {
-		for _, api := range menu.SysApi {
+	polices := make([][]string, 0) // // 遍历menus，并遍历每一项menu的SysApi，生成类似于["角色名称", "/api/v1/sys-user", "GET"]
+	for _, menu := range menusWithApis {
+		for _, api := range menu.ApisDetails {
 			if mp[model.RoleKey+"-"+api.Path+"-"+api.Action] != "" {
 				mp[model.RoleKey+"-"+api.Path+"-"+api.Action] = ""
 				//_, err = cb.AddNamedPolicy("p", model.RoleKey, api.Path, api.Action)
@@ -322,45 +406,71 @@ func (e *SysRole) UpdateDataScope(c *dto.RoleDataScopeReq) *SysRole {
 // UpdateStatus 修改SysRole对象status
 func (e *SysRole) UpdateStatus(c *dto.UpdateStatusReq) error {
 	var err error
-	tx := e.Orm
-	if config.DatabaseConfig.Driver != "sqlite3" {
-		tx := e.Orm.Begin()
-		defer func() {
-			if err != nil {
-				tx.Rollback()
-			} else {
-				tx.Commit()
-			}
-		}()
+	ctx := context.Background()
+	roleModel := &models.SysRole{}
+	filter := bson.M{
+		"status":    c.Status,
+		"updateBy":  c.UpdateBy,
+		"updatedAt": time.Now(),
 	}
-	var model = models.SysRole{}
-	tx.First(&model, c.GetId())
-	c.Generate(&model)
-	// 更新关联的数据，使用 FullSaveAssociations 模式
-	db := tx.Session(&gorm.Session{FullSaveAssociations: true}).Debug().Save(&model)
-	if err = db.Error; err != nil {
-		e.Log.Errorf("db error:%s", err)
+	err = roleModel.UpdateByRoleId(ctx, e.Mongo, c.RoleId, filter)
+	if err != nil {
+		e.Log.Errorf("Service UpdateSysRole error: %s", err)
 		return err
-	}
-	if db.RowsAffected == 0 {
-		return errors.New("无权更新该数据")
 	}
 	return nil
 }
 
 // GetById 获取SysRole对象
 func (e *SysRole) GetById(roleId int) ([]string, error) {
-	permissions := make([]string, 0)
-	model := models.SysRole{}
-	model.RoleId = roleId
-	if err := e.Orm.Model(&model).Preload("SysMenu").First(&model).Error; err != nil {
+	ctx := context.Background()
+	roleModel := &models.SysRole{}
+	menuModel := &models.SysMenu{}
+
+	// 构建聚合管道
+	pipeline := []bson.M{
+		{"$match": bson.M{"roleId": roleId}}, // 匹配特定角色ID
+		{"$lookup": bson.M{
+			"from":         menuModel.TableName(), // 菜单表的名称
+			"localField":   "menus",               // 角色集合中的菜单 ObjectId 数组
+			"foreignField": "_id",                 // 菜单集合中的 ObjectId 字段
+			"as":           "menu_details",        // 将匹配到的菜单数据放到新的字段 menu_details 中
+		}},
+		{"$unwind": "$menu_details"}, // 展开 menu_details 数组
+		{"$match": bson.M{
+			"menu_details.permission": bson.M{"$ne": ""}, // 只选择具有权限字段的菜单项
+		}},
+		{"$project": bson.M{
+			"permissions": "$menu_details.permission", // 只保留 permissions 字段
+		}},
+		{"$group": bson.M{
+			"_id":             nil,                             // 将所有结果聚合在一起
+			"permissionsList": bson.M{"$push": "$permissions"}, // 聚集所有权限到数组
+		}},
+		{"$project": bson.M{
+			"_id":             0, // 不需要 _id 字段
+			"permissionsList": 1, // 只保留 permissionsList 数组
+		}},
+	}
+
+	// 执行聚合查询
+	cur, err := e.Mongo.Collection(roleModel.TableName()).Aggregate(ctx, pipeline, options.Aggregate().SetAllowDiskUse(true))
+	if err != nil {
 		return nil, err
 	}
-	l := *model.SysMenu
-	for i := 0; i < len(l); i++ {
-		if l[i].Permission != "" {
-			permissions = append(permissions, l[i].Permission)
-		}
+	defer cur.Close(ctx)
+
+	var result struct {
+		PermissionsList []string `bson:"permissionsList"`
 	}
-	return permissions, nil
+
+	if cur.Next(ctx) {
+		if err := cur.Decode(&result); err != nil {
+			return nil, err
+		}
+	} else if err := cur.Err(); err != nil {
+		return nil, err
+	}
+
+	return result.PermissionsList, nil
 }
