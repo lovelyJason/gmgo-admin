@@ -28,8 +28,8 @@ settings:
     timeout: 3600
   database:
     driver: mongo
-    source: mongodb://mongodb用户名:密码@ip:27017/?replicaSet=cmgo-qytyi1gl_0&authSource=admin # 符合要求的mongo.options.Client().ApplyURI(Source)即可
-    db: "数据库名"
+    source: mongodb://{用户名}:{密码}@{ip}:{27017}/?replicaSet=cmgo-qytyi1gl_0&authSource=admin # 符合要求的mongo.options.Client().ApplyURI(Source)即可
+    db: 数据库名
   gen:
     # 代码生成读取的数据库名称
     dbname: dbname
