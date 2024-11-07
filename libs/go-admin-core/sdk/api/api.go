@@ -79,6 +79,7 @@ func (e *Api) Bind(d interface{}, bindings ...binding.Binding) *Api {
 	//vd.SetErrorFactory(func(failPath, msg string) error {
 	//	return fmt.Errorf(`"validation failed: %s %s"`, failPath, msg)
 	//})
+	// 这个是字节跳动的验证库
 	if err1 := vd.Validate(d); err1 != nil {
 		e.AddError(err1)
 	}

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	log "github.com/go-admin-team/go-admin-core/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,6 +13,7 @@ import (
 	"io/ioutil"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/bitly/go-simplejson"
 	"github.com/go-admin-team/go-admin-core/sdk"
@@ -22,16 +24,16 @@ import (
 )
 
 type SysApi struct {
-	Id         primitive.ObjectID `bson:"_id" json:"id"`
-	ApiId      int                `bson:"apiId" json:"apiId"`
-	Handle     string             `bson:"handle" json:"handle"`
-	Title      string             `bson:"title" json:"title"`
-	Path       string             `bson:"path" json:"path"`
-	Action     string             `bson:"action" json:"action"`
-	Type       string             `bson:"type" json:"type"`             // 接口类型,BUS:业务接口（可以用来分配权限的），SYS:系统接口
-	Modifiable bool               `bson:"modifiable" json:"modifiable"` // 是否可修改
-	models.ModelTime
-	models.ControlBy
+	Id               primitive.ObjectID `bson:"_id" json:"id"`
+	ApiId            int                `bson:"apiId" json:"apiId"`
+	Handle           string             `bson:"handle" json:"handle"`
+	Title            string             `bson:"title" json:"title"`
+	Path             string             `bson:"path" json:"path"`
+	Action           string             `bson:"action" json:"action"`
+	Type             string             `bson:"type" json:"type"`             // 接口类型,BUS:业务接口（可以用来分配权限的），SYS:系统接口
+	Modifiable       bool               `bson:"modifiable" json:"modifiable"` // 是否可修改
+	models.ModelTime `bson:"inline"`
+	models.ControlBy `bson:"inline"`
 }
 
 func (*SysApi) TableName() string {
@@ -120,6 +122,10 @@ func (e *SysApi) List(db *mongo.Database, filter SysApi, pageIndex, pageSize int
 	if pageSize <= 0 {
 		pageSize = 2000 // 默认值
 	}
+	query["$or"] = []bson.M{
+		{"deletedAt": bson.M{"$exists": false}},
+		{"deletedAt": nil},
+	}
 	skip := (pageIndex - 1) * pageSize
 
 	total, _ = db.Collection(e.TableName()).CountDocuments(ctx, query)
@@ -127,6 +133,7 @@ func (e *SysApi) List(db *mongo.Database, filter SysApi, pageIndex, pageSize int
 	findOptions := options.Find()
 	findOptions.SetSkip(int64(skip))
 	findOptions.SetLimit(int64(pageSize))
+	findOptions.SetSort(bson.M{"createdAt": -1})
 
 	cursor, err := db.Collection(e.TableName()).Find(ctx, query, findOptions)
 	if err != nil {
@@ -150,6 +157,77 @@ func (e *SysApi) GetOne(ctx context.Context, db *mongo.Database, apiId int, data
 	filter := bson.M{"apiId": apiId}
 	err := db.Collection(e.TableName()).FindOne(ctx, filter).Decode(&data)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *SysApi) Count(ctx context.Context, db *mongo.Database, filter bson.M, count *int64) error {
+	num, err := db.Collection(e.TableName()).CountDocuments(ctx, filter)
+	if err != nil {
+		return err
+	}
+	*count = num
+	return nil
+}
+
+func (e *SysApi) InsertOne(ctx context.Context, db *mongo.Database, filter bson.M) (int, error) {
+	collection := db.Collection(e.TableName())
+	pipeline := mongo.Pipeline{
+		{{"$group", bson.D{
+			{"_id", nil},                             // 不分组
+			{"maxApiId", bson.D{{"$max", "$apiId"}}}, // 获取最大值
+		}}},
+	}
+
+	cursor, err := collection.Aggregate(ctx, pipeline)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer cursor.Close(ctx)
+
+	var result struct {
+		MaxApiId int `bson:"maxApiId"`
+	}
+	if cursor.Next(context.TODO()) {
+		if err := cursor.Decode(&result); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Max roleId: %d\n", result.MaxApiId)
+	} else {
+		fmt.Println("No documents found")
+	}
+	newApiId := result.MaxApiId + 1
+	filter["apiId"] = newApiId
+	_, err = collection.InsertOne(ctx, filter)
+	if err != nil {
+		return 0, err
+	}
+	return newApiId, nil
+}
+
+func (e *SysApi) UpdateByApiId(ctx context.Context, db *mongo.Database, apiId int, filter bson.M) error {
+	_, err := db.Collection(e.TableName()).UpdateOne(ctx, bson.M{
+		"apiId": apiId,
+	}, bson.M{
+		"$set": filter,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (e *SysApi) SoftDelByApiIds(ctx context.Context, db *mongo.Database, apiIds []int) error {
+	now := time.Now()
+	_, err := db.Collection(e.TableName()).UpdateMany(ctx, bson.M{"apiId": bson.M{"$in": apiIds}}, bson.M{
+		"$set": bson.M{
+			"deletedAt": now,
+		},
+	})
+	if err != nil {
+		fmt.Println(err.Error())
 		return err
 	}
 	return nil

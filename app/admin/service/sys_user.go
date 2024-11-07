@@ -114,7 +114,7 @@ func (e *SysUser) Insert(c *dto.SysUserInsertReq) (int, error) {
 	}
 	userId, err := userModel.InsertOne(ctx, e.Mongo, insertFilter)
 	if err != nil {
-		e.Log.Errorf("db error: %s", err)
+		e.Log.Errorf("db insert user error: %s", err)
 		return 0, err
 	}
 	return userId, nil

@@ -185,6 +185,9 @@ func (e *SysUser) InsertOne(ctx context.Context, db *mongo.Database, filter bson
 	newUserId := result.MaxUserId + 1
 	filter["userId"] = newUserId
 	_, err = collection.InsertOne(ctx, filter)
+	if err != nil {
+		return 0, err
+	}
 	return newUserId, nil
 }
 

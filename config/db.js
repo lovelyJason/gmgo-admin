@@ -89,7 +89,7 @@ function init() {
       type: 'BUS',
       modifiable: 0,
       updateBy: 0,
-      updatedAt: '2021-6-13 20:53:47.926',
+      updatedAt: null,
     },
     {
       action: 'GET',
@@ -103,7 +103,7 @@ function init() {
       type: 'BUS',
       modifiable: 0,
       updateBy: 0,
-      updatedAt: '2021-6-13 20:53:47.966',
+      updatedAt: null,
     },
     {
       action: 'GET',

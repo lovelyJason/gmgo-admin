@@ -110,7 +110,13 @@ func (e SysApi) Insert(c *gin.Context) {
 		return
 	}
 	req.SetCreateBy(user.GetUserId(c))
-
+	apiId, err := s.Insert(&req)
+	if err != nil {
+		e.Logger.Error(err)
+		e.Error(500, err, err.Error())
+		return
+	}
+	e.OK(apiId, "创建成功")
 }
 
 // Update 修改接口管理
@@ -121,18 +127,19 @@ func (e SysApi) Insert(c *gin.Context) {
 // @Product application/json
 // @Param data body dto.SysApiUpdateReq true "body"
 // @Success 200 {object} response.Response	"{"code": 200, "message": "修改成功"}"
-// @Router /api/v1/sys-api/edit/{id} [post]
+// @Router /api/v1/sys-api/edit [post]
 // @Security Bearer
 func (e SysApi) Update(c *gin.Context) {
 	req := dto.SysApiUpdateReq{}
 	s := service.SysApi{}
 	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req).
+		MakeMongo().
+		Bind(&req, binding.JSON).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
 		e.Logger.Error(err)
+		e.Error(500, err, err.Error())
 		return
 	}
 	req.SetUpdateBy(user.GetUserId(c))
@@ -151,18 +158,19 @@ func (e SysApi) Update(c *gin.Context) {
 // @Tags 接口管理
 // @Param data body dto.SysApiDeleteReq true "body"
 // @Success 200 {object} response.Response	"{"code": 200, "message": "删除成功"}"
-// @Router /api/v1/sys-api [delete]
+// @Router /api/v1/sys-api/del [post]
 // @Security Bearer
 func (e SysApi) DeleteSysApi(c *gin.Context) {
 	req := dto.SysApiDeleteReq{}
 	s := service.SysApi{}
 	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req).
+		MakeMongo().
+		Bind(&req, binding.JSON).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
 		e.Logger.Error(err)
+		e.Error(500, err, err.Error())
 		return
 	}
 	p := actions.GetPermissionFromContext(c)

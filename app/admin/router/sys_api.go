@@ -19,6 +19,8 @@ func registerSysApiRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddlew
 	{
 		r.GET("/get", api.GetPage)
 		r.POST("/get/:id", api.Get)
-		r.POST("/edit/:id", api.Update)
+		r.POST("/edit", api.Update)
+		r.POST("/add", api.Insert)
+		r.POST("/del", api.DeleteSysApi)
 	}
 }

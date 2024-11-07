@@ -160,6 +160,13 @@ func tip() {
 }
 
 func initRouter() {
+	// 启用error翻译
+	//trans, err := sdkApi.TransInit("zh")
+	//if err != nil {
+	//	fmt.Printf("init trans failed, err:%v\n", err)
+	//	return
+	//}
+	//global.Trans = trans
 	var r *gin.Engine
 	h := sdk.Runtime.GetEngine()
 	if h == nil {

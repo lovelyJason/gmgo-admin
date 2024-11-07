@@ -31,11 +31,12 @@ func (m *SysApiGetPageReq) GetNeedSearch() interface{} {
 // SysApiInsertReq 功能创建请求参数
 type SysApiInsertReq struct {
 	Id     int    `json:"-" comment:"编码"` // 编码
-	Handle string `json:"handle" comment:"handle"`
-	Title  string `json:"title" comment:"标题"`
-	Path   string `json:"path" comment:"地址"`
-	Type   string `json:"type" comment:""`
-	Action string `json:"action" comment:"类型"`
+	Handle string `json:"handle" comment:"handle" binding:"required,regexp=^[a-zA-Z0-9!@#$%^&*()_+={}\[\]:;,.<>?/-]*$"`
+	Title  string `json:"title" comment:"标题" binding:"required"`
+	Path   string `json:"path" comment:"地址" binding:"required"`
+	Type   string `json:"type" comment:"" binding:"required,oneof=BUS SYS"`
+	Action string `json:"action" comment:"类型" binding:"required,oneof=GET POST PUT DELETE"`
+	//Action1 string `json:"action1" comment:"类型1" binding:"required,email"`
 	common.ControlBy
 }
 
@@ -53,7 +54,8 @@ func (s *SysApiInsertReq) GetId() interface{} {
 
 // SysApiUpdateReq 功能更新请求参数
 type SysApiUpdateReq struct {
-	Id     primitive.ObjectID `uri:"id" comment:"编码"` // 编码
+	Id     primitive.ObjectID `uri:"id" comment:"编码"`                            // 编码
+	ApiId  int                `json:"apiId" comment:"API ID" binding:"required"` // apiID
 	Handle string             `json:"handle" comment:"handle"`
 	Title  string             `json:"title" comment:"标题"`
 	Path   string             `json:"path" comment:"地址"`
@@ -88,7 +90,8 @@ func (s *SysApiGetReq) GetId() int {
 
 // SysApiDeleteReq 功能删除请求参数
 type SysApiDeleteReq struct {
-	Ids []int `json:"ids"`
+	Ids    []int `json:"ids"`
+	ApiIds []int `json:"apiIds" binding:"required"`
 }
 
 func (s *SysApiDeleteReq) GetId() interface{} {

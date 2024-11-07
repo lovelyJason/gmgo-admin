@@ -9,7 +9,9 @@ import (
 	"gmgo-admin/app/admin/models"
 	"gmgo-admin/app/admin/service/dto"
 	"gmgo-admin/common/actions"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"time"
 )
 
 type SysApi struct {
@@ -76,44 +78,84 @@ func (e *SysApi) Get(ctx context.Context, d *dto.SysApiGetReq, p *actions.DataPe
 
 // Insert 创建SysApi对象
 func (e *SysApi) Insert(c *dto.SysApiInsertReq) (int, error) {
-	//var err error
-	//var data models.SysApi
-	//var apiModel = &models.SysApi{}
-	//var filter = bson.M{}
-	return 0, nil
+	var err error
+	var apiModel = &models.SysApi{}
+	var filter = bson.M{
+		"$or": []bson.M{
+			// 查询 title 相同的记录数量
+			{
+				"title": c.Title,
+			},
+			// 查询 path 和 action 都相同的记录数量
+			{
+				"path":   c.Path,
+				"action": c.Action,
+			},
+		},
+	}
+	var ctx = context.Background()
+	var i int64
+	err = apiModel.Count(ctx, e.Mongo, filter, &i)
+	if err != nil {
+		e.Log.Errorf("db error: %s", err)
+		return 0, err
+	}
+	if i > 0 {
+		err := errors.New("api标题或者api地址已存在！")
+		e.Log.Errorf("db error: %s", err)
+		return 0, err
+	}
+	insertFilter := bson.M{
+		"title":      c.Title,
+		"action":     c.Action,
+		"handle":     c.Handle,
+		"path":       c.Path,
+		"type":       c.Type,
+		"modifiable": 1,
+		"createdAt":  time.Now(),
+		"createBy":   c.CreateBy,
+	}
+	apiId, err := apiModel.InsertOne(ctx, e.Mongo, insertFilter)
+	if err != nil {
+		e.Log.Errorf("db insert api error: %s", err)
+		return 0, err
+	}
+	return apiId, nil
 }
 
 // Update 修改SysApi对象
 func (e *SysApi) Update(c *dto.SysApiUpdateReq, p *actions.DataPermission) error {
-	var model = models.SysApi{}
-	db := e.Orm.Debug().First(&model, c.GetId())
-	if db.RowsAffected == 0 {
-		return errors.New("无权更新该数据")
+	var err error
+	var apiModel = &models.SysApi{}
+	ctx := context.Background()
+	filter := bson.M{
+		"handle":    c.Handle,
+		"title":     c.Title,
+		"type":      c.Type,
+		"action":    c.Action,
+		"path":      c.Path,
+		"updatedAt": time.Now(),
+		"updateBy":  c.UpdateBy,
 	}
-	c.Generate(&model)
-	db = e.Orm.Save(&model)
-	if err := db.Error; err != nil {
-		e.Log.Errorf("Service UpdateSysApi error:%s", err)
+	err = apiModel.UpdateByApiId(ctx, e.Mongo, c.ApiId, filter)
+	if err != nil {
+		e.Log.Errorf("Service UpdateSysApi error: %s", err)
 		return err
 	}
-
 	return nil
 }
 
 // Remove 删除SysApi
 func (e *SysApi) Remove(d *dto.SysApiDeleteReq, p *actions.DataPermission) error {
-	var data models.SysApi
+	var err error
+	apiModel := models.SysApi{}
+	ctx := context.Background()
 
-	db := e.Orm.Model(&data).
-		Scopes(
-			actions.Permission(data.TableName(), p),
-		).Delete(&data, d.GetId())
-	if err := db.Error; err != nil {
-		e.Log.Errorf("Service RemoveSysApi error:%s", err)
+	err = apiModel.SoftDelByApiIds(ctx, e.Mongo, d.ApiIds)
+
+	if err != nil {
+		e.Log.Errorf("Error found in  RemoveSysUser : %s", err)
 		return err
-	}
-	if db.RowsAffected == 0 {
-		return errors.New("无权删除该数据")
 	}
 	return nil
 }
