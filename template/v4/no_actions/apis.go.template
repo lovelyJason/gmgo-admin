@@ -8,10 +8,10 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth/user"
 	_ "github.com/go-admin-team/go-admin-core/sdk/pkg/response"
 
-	"go-admin/app/{{.PackageName}}/models"
-	"go-admin/app/{{.PackageName}}/service"
-	"go-admin/app/{{.PackageName}}/service/dto"
-	"go-admin/common/actions"
+	"gmgo-admin/app/{{.PackageName}}/models"
+	"gmgo-admin/app/{{.PackageName}}/service"
+	"gmgo-admin/app/{{.PackageName}}/service/dto"
+	"gmgo-admin/common/actions"
 )
 
 type {{.ClassName}} struct {

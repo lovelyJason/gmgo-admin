@@ -1,13 +1,13 @@
 package dto
 
 import (
-	"go-admin/app/admin/models"
-	common "go-admin/common/models"
+	"gmgo-admin/app/admin/models"
+	common "gmgo-admin/common/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 
-	"go-admin/common/dto"
+	"gmgo-admin/common/dto"
 )
 
 type SysRoleGetPageReq struct {

@@ -7,8 +7,8 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk"
 	"github.com/go-admin-team/go-admin-core/sdk/api"
 
-	"go-admin/app/jobs/service"
-	"go-admin/common/dto"
+	"gmgo-admin/app/jobs/service"
+	"gmgo-admin/common/dto"
 )
 
 type SysJob struct {

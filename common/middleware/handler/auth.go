@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"go-admin/app/admin/models"
-	"go-admin/common"
-	models2 "go-admin/common/models"
+	"gmgo-admin/app/admin/models"
+	"gmgo-admin/common"
+	models2 "gmgo-admin/common/models"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 	"net/http"
@@ -18,7 +18,7 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth/user"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/response"
 	"github.com/mssola/user_agent"
-	"go-admin/common/global"
+	"gmgo-admin/common/global"
 )
 
 func PayloadFunc(data interface{}) jwt.MapClaims {

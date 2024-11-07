@@ -2,7 +2,7 @@ package apis
 
 import (
 	"github.com/gin-gonic/gin/binding"
-	"go-admin/app/admin/models"
+	"gmgo-admin/app/admin/models"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 
@@ -12,9 +12,9 @@ import (
 	_ "github.com/go-admin-team/go-admin-core/sdk/pkg/response"
 	"github.com/google/uuid"
 
-	"go-admin/app/admin/service"
-	"go-admin/app/admin/service/dto"
-	"go-admin/common/actions"
+	"gmgo-admin/app/admin/service"
+	"gmgo-admin/app/admin/service/dto"
+	"gmgo-admin/common/actions"
 )
 
 type SysUser struct {

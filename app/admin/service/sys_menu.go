@@ -13,9 +13,9 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
-	"go-admin/app/admin/models"
-	"go-admin/app/admin/service/dto"
-	cModels "go-admin/common/models"
+	"gmgo-admin/app/admin/models"
+	"gmgo-admin/app/admin/service/dto"
+	cModels "gmgo-admin/common/models"
 
 	"github.com/go-admin-team/go-admin-core/sdk/service"
 )

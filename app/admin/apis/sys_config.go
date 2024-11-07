@@ -6,9 +6,9 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/api"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth/user"
 
-	"go-admin/app/admin/models"
-	"go-admin/app/admin/service"
-	"go-admin/app/admin/service/dto"
+	"gmgo-admin/app/admin/models"
+	"gmgo-admin/app/admin/service"
+	"gmgo-admin/app/admin/service/dto"
 )
 
 type SysConfig struct {

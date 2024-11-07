@@ -2,7 +2,7 @@ package models
 
 import (
 	"context"
-	"go-admin/common/models"
+	"gmgo-admin/common/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

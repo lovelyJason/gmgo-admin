@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	log "github.com/go-admin-team/go-admin-core/logger"
-	"go-admin/common/models"
+	"gmgo-admin/common/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

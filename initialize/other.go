@@ -2,8 +2,8 @@ package initialize
 
 import (
 	"github.com/songzhibin97/gkit/cache/local_cache"
-	"go-admin/common/global"
-	"go-admin/utils"
+	"gmgo-admin/common/global"
+	"gmgo-admin/utils"
 )
 
 func OtherInit() {

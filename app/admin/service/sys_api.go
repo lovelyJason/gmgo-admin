@@ -6,12 +6,9 @@ import (
 	"fmt"
 	"github.com/go-admin-team/go-admin-core/sdk/runtime"
 	"github.com/go-admin-team/go-admin-core/sdk/service"
-	"go-admin/app/admin/models"
-	"go-admin/app/admin/service/dto"
-	"go-admin/common/actions"
-	cDto "go-admin/common/dto"
-	"go-admin/common/global"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gmgo-admin/app/admin/models"
+	"gmgo-admin/app/admin/service/dto"
+	"gmgo-admin/common/actions"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -20,38 +17,7 @@ type SysApi struct {
 }
 
 // GetPage 获取SysApi列表
-func (e *SysApi) GetPage(c *dto.SysApiGetPageReq, p *actions.DataPermission, list *[]models.SysApi, count *int64) error {
-	var err error
-	var data models.SysApi
-
-	orm := e.Orm.Debug().Model(&data).
-		Scopes(
-			cDto.MakeCondition(c.GetNeedSearch()),
-			cDto.Paginate(c.GetPageSize(), c.GetPageIndex()),
-			actions.Permission(data.TableName(), p),
-		)
-	if c.Type != "" {
-		qType := c.Type
-		if qType == "暂无" {
-			qType = ""
-		}
-		if global.Driver == "postgres" {
-			orm = orm.Where("type = ?", qType)
-		} else {
-			orm = orm.Where("`type` = ?", qType)
-		}
-
-	}
-	err = orm.Find(list).Limit(-1).Offset(-1).
-		Count(count).Error
-	if err != nil {
-		e.Log.Errorf("Service GetSysApiPage error:%s", err)
-		return err
-	}
-	return nil
-}
-
-func (e *SysApi) GetPageWithMongo(c *dto.SysApiGetPageReq, p *actions.DataPermission) ([]*models.SysApi, int64, error) {
+func (e *SysApi) GetPage(c *dto.SysApiGetPageReq, p *actions.DataPermission) ([]*models.SysApi, int64, error) {
 	var err error
 	//var data models.SysApi
 	model := &models.SysApi{}
@@ -69,6 +35,7 @@ func (e *SysApi) GetPageWithMongo(c *dto.SysApiGetPageReq, p *actions.DataPermis
 // Get 获取SysApi对象with id
 func (e *SysApi) Get(ctx context.Context, d *dto.SysApiGetReq, p *actions.DataPermission, data *models.SysApi) *SysApi {
 	model := &models.SysApi{}
+	var err error
 	//var data models.SysApi
 	//err := e.Orm.Model(&data).
 	//	Scopes(
@@ -90,10 +57,7 @@ func (e *SysApi) Get(ctx context.Context, d *dto.SysApiGetReq, p *actions.DataPe
 	if p != nil {
 		// Add any permission-related filtering logic here
 	}
-	apiId, err := primitive.ObjectIDFromHex(d.GetId())
-	if err != nil {
-		e.Log.Fatal("d.GetId() is not a string as well as it is not a objectId")
-	}
+	apiId := d.GetId()
 	err = model.GetOne(ctx, e.Mongo, apiId, data)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -108,6 +72,15 @@ func (e *SysApi) Get(ctx context.Context, d *dto.SysApiGetReq, p *actions.DataPe
 	}
 
 	return e
+}
+
+// Insert 创建SysApi对象
+func (e *SysApi) Insert(c *dto.SysApiInsertReq) (int, error) {
+	//var err error
+	//var data models.SysApi
+	//var apiModel = &models.SysApi{}
+	//var filter = bson.M{}
+	return 0, nil
 }
 
 // Update 修改SysApi对象

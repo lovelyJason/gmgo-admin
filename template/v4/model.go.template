@@ -20,7 +20,7 @@ import (
     "time"
     {{- end }}
 
-	"go-admin/common/models"
+	"gmgo-admin/common/models"
 
 )
 

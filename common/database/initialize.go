@@ -15,7 +15,7 @@ import (
 	"gorm.io/gorm/schema"
 	"time"
 
-	"go-admin/common/global"
+	"gmgo-admin/common/global"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

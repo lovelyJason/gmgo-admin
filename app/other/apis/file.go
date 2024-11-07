@@ -13,7 +13,7 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/utils"
 	"github.com/google/uuid"
 
-	"go-admin/common/file_store"
+	"gmgo-admin/common/file_store"
 )
 
 type FileResponse struct {

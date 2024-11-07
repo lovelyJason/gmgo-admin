@@ -1,10 +1,10 @@
 package dto
 
 import (
-	"go-admin/app/admin/models"
+	"gmgo-admin/app/admin/models"
 
-	"go-admin/common/dto"
-	common "go-admin/common/models"
+	"gmgo-admin/common/dto"
+	common "gmgo-admin/common/models"
 )
 
 type SysUserGetPageReq struct {

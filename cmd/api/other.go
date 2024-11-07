@@ -1,6 +1,6 @@
 package api
 
-import "go-admin/app/other/router"
+import "gmgo-admin/app/other/router"
 
 func init() {
 	//注册路由 fixme 其他应用的路由，在本目录新建文件放在init方法

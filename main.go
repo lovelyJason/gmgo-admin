@@ -1,12 +1,12 @@
 package main
 
 import (
-	"go-admin/cmd"
+	"gmgo-admin/cmd"
 )
 
 //go:generate swag init --parseDependency --parseDepth=6 --instanceName admin -o ./docs/admin
 
-// @title go-admin API
+// @title gmgo-admin API
 // @version 2.0.0
 // @description 基于Gin + MongoDB + Vue3 + Ant Design Vue + Vben5.2的前后端分离权限管理系统的接口文档
 // @license.name MIT

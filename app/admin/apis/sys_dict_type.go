@@ -7,10 +7,10 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/api"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth/user"
 	_ "github.com/go-admin-team/go-admin-core/sdk/pkg/response"
-	"go-admin/app/admin/models"
+	"gmgo-admin/app/admin/models"
 
-	"go-admin/app/admin/service"
-	"go-admin/app/admin/service/dto"
+	"gmgo-admin/app/admin/service"
+	"gmgo-admin/app/admin/service/dto"
 )
 
 type SysDictType struct {
@@ -31,7 +31,7 @@ type SysDictType struct {
 // @Security Bearer
 func (e SysDictType) GetPage(c *gin.Context) {
 	s := service.SysDictType{}
-	req :=dto.SysDictTypeGetPageReq{}
+	req := dto.SysDictTypeGetPageReq{}
 	err := e.MakeContext(c).
 		MakeOrm().
 		Bind(&req, binding.Form).
@@ -62,7 +62,7 @@ func (e SysDictType) GetPage(c *gin.Context) {
 // @Security Bearer
 func (e SysDictType) Get(c *gin.Context) {
 	s := service.SysDictType{}
-	req :=dto.SysDictTypeGetReq{}
+	req := dto.SysDictTypeGetReq{}
 	err := e.MakeContext(c).
 		MakeOrm().
 		Bind(&req, nil).
@@ -82,7 +82,7 @@ func (e SysDictType) Get(c *gin.Context) {
 	e.OK(object, "查询成功")
 }
 
-//Insert 字典类型创建
+// Insert 字典类型创建
 // @Summary 添加字典类型
 // @Description 获取JSON
 // @Tags 字典类型
@@ -94,7 +94,7 @@ func (e SysDictType) Get(c *gin.Context) {
 // @Security Bearer
 func (e SysDictType) Insert(c *gin.Context) {
 	s := service.SysDictType{}
-	req :=dto.SysDictTypeInsertReq{}
+	req := dto.SysDictTypeInsertReq{}
 	err := e.MakeContext(c).
 		MakeOrm().
 		Bind(&req, binding.JSON).
@@ -109,7 +109,7 @@ func (e SysDictType) Insert(c *gin.Context) {
 	err = s.Insert(&req)
 	if err != nil {
 		e.Logger.Error(err)
-		e.Error(500, err,fmt.Sprintf(" 创建字典类型失败，详情：%s", err.Error()))
+		e.Error(500, err, fmt.Sprintf(" 创建字典类型失败，详情：%s", err.Error()))
 		return
 	}
 	e.OK(req.GetId(), "创建成功")
@@ -127,7 +127,7 @@ func (e SysDictType) Insert(c *gin.Context) {
 // @Security Bearer
 func (e SysDictType) Update(c *gin.Context) {
 	s := service.SysDictType{}
-	req :=dto.SysDictTypeUpdateReq{}
+	req := dto.SysDictTypeUpdateReq{}
 	err := e.MakeContext(c).
 		MakeOrm().
 		Bind(&req, binding.JSON, nil).
@@ -157,7 +157,7 @@ func (e SysDictType) Update(c *gin.Context) {
 // @Security Bearer
 func (e SysDictType) Delete(c *gin.Context) {
 	s := service.SysDictType{}
-	req :=dto.SysDictTypeDeleteReq{}
+	req := dto.SysDictTypeDeleteReq{}
 	err := e.MakeContext(c).
 		MakeOrm().
 		Bind(&req, binding.JSON, nil).
@@ -189,7 +189,7 @@ func (e SysDictType) Delete(c *gin.Context) {
 // @Security Bearer
 func (e SysDictType) GetAll(c *gin.Context) {
 	s := service.SysDictType{}
-	req :=dto.SysDictTypeGetPageReq{}
+	req := dto.SysDictTypeGetPageReq{}
 	err := e.MakeContext(c).
 		MakeOrm().
 		Bind(&req, binding.Form).

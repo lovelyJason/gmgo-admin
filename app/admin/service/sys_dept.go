@@ -2,13 +2,13 @@ package service
 
 import (
 	"errors"
-	"go-admin/app/admin/models"
+	"gmgo-admin/app/admin/models"
 
 	log "github.com/go-admin-team/go-admin-core/logger"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg"
 
 	"github.com/go-admin-team/go-admin-core/sdk/service"
-	"go-admin/app/admin/service/dto"
+	"gmgo-admin/app/admin/service/dto"
 )
 
 type SysDept struct {

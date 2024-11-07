@@ -12,7 +12,7 @@ ENV TZ Asia/Shanghai
 
 COPY ./main /main
 COPY ./config/settings.demo.yml /config/settings.yml
-COPY ./go-admin-db.db /go-admin-db.db
+COPY ./gmgo-admin-db.db /gmgo-admin-db.db
 EXPOSE 8000
 RUN  chmod +x /main
 CMD ["/main","server","-c", "/config/settings.yml"]

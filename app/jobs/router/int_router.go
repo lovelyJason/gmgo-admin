@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	log "github.com/go-admin-team/go-admin-core/logger"
 	"github.com/go-admin-team/go-admin-core/sdk"
-	common "go-admin/common/middleware"
+	common "gmgo-admin/common/middleware"
 )
 
 // InitRouter 路由初始化，不要怀疑，这里用到了

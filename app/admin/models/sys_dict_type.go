@@ -1,7 +1,7 @@
 package models
 
 import (
-	"go-admin/common/models"
+	"gmgo-admin/common/models"
 )
 
 type SysDictType struct {

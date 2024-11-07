@@ -1,16 +1,16 @@
 version: '3.8'
 services:
-  go-admin-api:
-    container_name: go-admin
-    image: go-admin:latest
+  gmgo-admin-api:
+    container_name: gmgo-admin
+    image: gmgo-admin:latest
     privileged: true
     restart: always
     ports:
       - 8000:8000
     volumes:
-      - ./config/:/go-admin-api/config/
-      - ./static/:/go-admin-api/static/
-      - ./temp/:/go-admin-api/temp/
+      - ./config/:/gmgo-admin-api/config/
+      - ./static/:/gmgo-admin-api/static/
+      - ./temp/:/gmgo-admin-api/temp/
     networks:
       - myweb
 networks:

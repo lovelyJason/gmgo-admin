@@ -1,4 +1,4 @@
-module go-admin
+module gmgo-admin
 
 go 1.21
 

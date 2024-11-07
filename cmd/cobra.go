@@ -4,24 +4,24 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg"
-	"go-admin/cmd/app"
-	"go-admin/common/global"
-	"go-admin/initialize"
+	"gmgo-admin/cmd/app"
+	"gmgo-admin/common/global"
+	"gmgo-admin/initialize"
 	"os"
 
 	"github.com/spf13/cobra"
 
-	"go-admin/cmd/api"
-	"go-admin/cmd/config"
-	"go-admin/cmd/migrate"
-	"go-admin/cmd/version"
+	"gmgo-admin/cmd/api"
+	"gmgo-admin/cmd/config"
+	"gmgo-admin/cmd/migrate"
+	"gmgo-admin/cmd/version"
 )
 
 var rootCmd = &cobra.Command{
-	Use:          "go-admin",
-	Short:        "go-admin",
+	Use:          "gmgo-admin",
+	Short:        "gmgo-admin",
 	SilenceUsage: true,
-	Long:         `go-admin`,
+	Long:         `gmgo-admin`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			tip()

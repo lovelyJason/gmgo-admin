@@ -2,7 +2,7 @@
   "sysApi": [
     {
       "id": 5,
-      "handle": "go-admin/app/admin/apis.SysLoginLog.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysLoginLog.Get-fm",
       "title": "登录日志通过id获取",
       "path": "/api/v1/sys-login-log/:id",
       "type": "BUS",
@@ -15,7 +15,7 @@
     },
     {
       "id": 6,
-      "handle": "go-admin/app/admin/apis.SysOperaLog.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysOperaLog.GetPage-fm",
       "title": "操作日志列表",
       "path": "/api/v1/sys-opera-log",
       "type": "BUS",
@@ -28,7 +28,7 @@
     },
     {
       "id": 7,
-      "handle": "go-admin/app/admin/apis.SysOperaLog.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysOperaLog.Get-fm",
       "title": "操作日志通过id获取",
       "path": "/api/v1/sys-opera-log/:id",
       "type": "BUS",
@@ -41,7 +41,7 @@
     },
     {
       "id": 8,
-      "handle": "go-admin/common/actions.IndexAction.func1",
+      "handle": "gmgo-admin/common/actions.IndexAction.func1",
       "title": "分类列表",
       "path": "/api/v1/syscategory",
       "type": "BUS",
@@ -54,7 +54,7 @@
     },
     {
       "id": 9,
-      "handle": "go-admin/common/actions.ViewAction.func1",
+      "handle": "gmgo-admin/common/actions.ViewAction.func1",
       "title": "分类通过id获取",
       "path": "/api/v1/syscategory/:id",
       "type": "BUS",
@@ -67,7 +67,7 @@
     },
     {
       "id": 10,
-      "handle": "go-admin/common/actions.IndexAction.func1",
+      "handle": "gmgo-admin/common/actions.IndexAction.func1",
       "title": "内容列表",
       "path": "/api/v1/syscontent",
       "type": "BUS",
@@ -80,7 +80,7 @@
     },
     {
       "id": 11,
-      "handle": "go-admin/common/actions.ViewAction.func1",
+      "handle": "gmgo-admin/common/actions.ViewAction.func1",
       "title": "内容通过id获取",
       "path": "/api/v1/syscontent/:id",
       "type": "BUS",
@@ -93,7 +93,7 @@
     },
     {
       "id": 15,
-      "handle": "go-admin/common/actions.IndexAction.func1",
+      "handle": "gmgo-admin/common/actions.IndexAction.func1",
       "title": "job列表",
       "path": "/api/v1/sysjob",
       "type": "BUS",
@@ -106,7 +106,7 @@
     },
     {
       "id": 16,
-      "handle": "go-admin/common/actions.ViewAction.func1",
+      "handle": "gmgo-admin/common/actions.ViewAction.func1",
       "title": "job通过id获取",
       "path": "/api/v1/sysjob/:id",
       "type": "BUS",
@@ -119,7 +119,7 @@
     },
     {
       "id": 21,
-      "handle": "go-admin/app/admin/apis.SysDictType.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictType.GetPage-fm",
       "title": "字典类型列表",
       "path": "/api/v1/dict/type",
       "type": "BUS",
@@ -132,7 +132,7 @@
     },
     {
       "id": 22,
-      "handle": "go-admin/app/admin/apis.SysDictType.GetAll-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictType.GetAll-fm",
       "title": "字典类型查询【代码生成】",
       "path": "/api/v1/dict/type-option-select",
       "type": "SYS",
@@ -145,7 +145,7 @@
     },
     {
       "id": 23,
-      "handle": "go-admin/app/admin/apis.SysDictType.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictType.Get-fm",
       "title": "字典类型通过id获取",
       "path": "/api/v1/dict/type/:id",
       "type": "BUS",
@@ -158,7 +158,7 @@
     },
     {
       "id": 24,
-      "handle": "go-admin/app/admin/apis.SysDictData.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictData.GetPage-fm",
       "title": "字典数据列表",
       "path": "/api/v1/dict/data",
       "type": "BUS",
@@ -171,7 +171,7 @@
     },
     {
       "id": 25,
-      "handle": "go-admin/app/admin/apis.SysDictData.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictData.Get-fm",
       "title": "字典数据通过code获取",
       "path": "/api/v1/dict/data/:dictCode",
       "type": "BUS",
@@ -184,7 +184,7 @@
     },
     {
       "id": 26,
-      "handle": "go-admin/app/admin/apis.SysDictData.GetSysDictDataAll-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictData.GetSysDictDataAll-fm",
       "title": "数据字典根据key获取",
       "path": "/api/v1/dict-data/option-select",
       "type": "SYS",
@@ -197,7 +197,7 @@
     },
     {
       "id": 27,
-      "handle": "go-admin/app/admin/apis.SysDept.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDept.GetPage-fm",
       "title": "部门列表",
       "path": "/api/v1/dept",
       "type": "BUS",
@@ -210,7 +210,7 @@
     },
     {
       "id": 28,
-      "handle": "go-admin/app/admin/apis.SysDept.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDept.Get-fm",
       "title": "部门通过id获取",
       "path": "/api/v1/dept/:id",
       "type": "BUS",
@@ -223,7 +223,7 @@
     },
     {
       "id": 29,
-      "handle": "go-admin/app/admin/apis.SysDept.Get2Tree-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDept.Get2Tree-fm",
       "title": "查询部门下拉树【角色权限-自定权限】",
       "path": "/api/v1/deptTree",
       "type": "SYS",
@@ -236,7 +236,7 @@
     },
     {
       "id": 30,
-      "handle": "go-admin/app/admin/apis/tools.(*Gen).GetDBTableList-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*Gen).GetDBTableList-fm",
       "title": "数据库表列表",
       "path": "/api/v1/db/tables/page",
       "type": "SYS",
@@ -249,7 +249,7 @@
     },
     {
       "id": 31,
-      "handle": "go-admin/app/admin/apis/tools.(*Gen).GetDBColumnList-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*Gen).GetDBColumnList-fm",
       "title": "数据表列列表",
       "path": "/api/v1/db/columns/page",
       "type": "SYS",
@@ -262,7 +262,7 @@
     },
     {
       "id": 32,
-      "handle": "go-admin/app/admin/apis/tools.Gen.GenCode-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.Gen.GenCode-fm",
       "title": "数据库表生成到项目",
       "path": "/api/v1/gen/toproject/:tableId",
       "type": "SYS",
@@ -275,7 +275,7 @@
     },
     {
       "id": 33,
-      "handle": "go-admin/app/admin/apis/tools.Gen.GenMenuAndApi-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.Gen.GenMenuAndApi-fm",
       "title": "数据库表生成到DB",
       "path": "/api/v1/gen/todb/:tableId",
       "type": "SYS",
@@ -288,7 +288,7 @@
     },
     {
       "id": 34,
-      "handle": "go-admin/app/admin/apis/tools.(*SysTable).GetSysTablesTree-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*SysTable).GetSysTablesTree-fm",
       "title": "关系表数据【代码生成】",
       "path": "/api/v1/gen/tabletree",
       "type": "SYS",
@@ -301,7 +301,7 @@
     },
     {
       "id": 35,
-      "handle": "go-admin/app/admin/apis/tools.Gen.Preview-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.Gen.Preview-fm",
       "title": "生成预览通过id获取",
       "path": "/api/v1/gen/preview/:tableId",
       "type": "SYS",
@@ -314,7 +314,7 @@
     },
     {
       "id": 36,
-      "handle": "go-admin/app/admin/apis/tools.Gen.GenApiToFile-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.Gen.GenApiToFile-fm",
       "title": "生成api带文件",
       "path": "/api/v1/gen/apitofile/:tableId",
       "type": "SYS",
@@ -327,7 +327,7 @@
     },
     {
       "id": 37,
-      "handle": "go-admin/app/admin/apis.System.GenerateCaptchaHandler-fm",
+      "handle": "gmgo-admin/app/admin/apis.System.GenerateCaptchaHandler-fm",
       "title": "验证码获取",
       "path": "/api/v1/getCaptcha",
       "type": "SYS",
@@ -340,7 +340,7 @@
     },
     {
       "id": 38,
-      "handle": "go-admin/app/admin/apis.SysUser.GetInfo-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.GetInfo-fm",
       "title": "用户信息获取",
       "path": "/api/v1/getinfo",
       "type": "SYS",
@@ -353,7 +353,7 @@
     },
     {
       "id": 39,
-      "handle": "go-admin/app/admin/apis.SysMenu.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.GetPage-fm",
       "title": "菜单列表",
       "path": "/api/v1/menu",
       "type": "BUS",
@@ -366,7 +366,7 @@
     },
     {
       "id": 40,
-      "handle": "go-admin/app/admin/apis.SysMenu.GetMenuTreeSelect-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.GetMenuTreeSelect-fm",
       "title": "查询菜单下拉树结构【废弃】",
       "path": "/api/v1/menuTreeselect",
       "type": "SYS",
@@ -379,7 +379,7 @@
     },
     {
       "id": 41,
-      "handle": "go-admin/app/admin/apis.SysMenu.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.Get-fm",
       "title": "菜单通过id获取",
       "path": "/api/v1/menu/:id",
       "type": "BUS",
@@ -392,7 +392,7 @@
     },
     {
       "id": 42,
-      "handle": "go-admin/app/admin/apis.SysMenu.GetMenuRole-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.GetMenuRole-fm",
       "title": "角色菜单【顶部左侧菜单】",
       "path": "/api/v1/menurole",
       "type": "SYS",
@@ -405,7 +405,7 @@
     },
     {
       "id": 43,
-      "handle": "go-admin/app/admin/apis.SysMenu.GetMenuIDS-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.GetMenuIDS-fm",
       "title": "获取角色对应的菜单id数组【废弃】",
       "path": "/api/v1/menuids",
       "type": "SYS",
@@ -418,7 +418,7 @@
     },
     {
       "id": 44,
-      "handle": "go-admin/app/admin/apis.SysRole.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysRole.GetPage-fm",
       "title": "角色列表",
       "path": "/api/v1/role",
       "type": "BUS",
@@ -431,7 +431,7 @@
     },
     {
       "id": 45,
-      "handle": "go-admin/app/admin/apis.SysMenu.GetMenuTreeSelect-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.GetMenuTreeSelect-fm",
       "title": "菜单权限列表【角色配菜单使用】",
       "path": "/api/v1/roleMenuTreeselect/:roleId",
       "type": "SYS",
@@ -444,7 +444,7 @@
     },
     {
       "id": 46,
-      "handle": "go-admin/app/admin/apis.SysDept.GetDeptTreeRoleSelect-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDept.GetDeptTreeRoleSelect-fm",
       "title": "角色部门结构树【自定义数据权限】",
       "path": "/api/v1/roleDeptTreeselect/:roleId",
       "type": "SYS",
@@ -457,7 +457,7 @@
     },
     {
       "id": 47,
-      "handle": "go-admin/app/admin/apis.SysRole.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysRole.Get-fm",
       "title": "角色通过id获取",
       "path": "/api/v1/role/:id",
       "type": "BUS",
@@ -483,7 +483,7 @@
     },
     {
       "id": 53,
-      "handle": "go-admin/app/admin/apis.SysConfig.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.GetPage-fm",
       "title": "参数列表",
       "path": "/api/v1/config",
       "type": "BUS",
@@ -496,7 +496,7 @@
     },
     {
       "id": 54,
-      "handle": "go-admin/app/admin/apis.SysConfig.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.Get-fm",
       "title": "参数通过id获取",
       "path": "/api/v1/config/:id",
       "type": "BUS",
@@ -509,7 +509,7 @@
     },
     {
       "id": 55,
-      "handle": "go-admin/app/admin/apis.SysConfig.GetSysConfigByKEYForService-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.GetSysConfigByKEYForService-fm",
       "title": "参数通过键名搜索【基础默认配置】",
       "path": "/api/v1/configKey/:configKey",
       "type": "SYS",
@@ -522,7 +522,7 @@
     },
     {
       "id": 57,
-      "handle": "go-admin/app/jobs/apis.SysJob.RemoveJobForService-fm",
+      "handle": "gmgo-admin/app/jobs/apis.SysJob.RemoveJobForService-fm",
       "title": "job移除",
       "path": "/api/v1/job/remove/:id",
       "type": "BUS",
@@ -535,7 +535,7 @@
     },
     {
       "id": 58,
-      "handle": "go-admin/app/jobs/apis.SysJob.StartJobForService-fm",
+      "handle": "gmgo-admin/app/jobs/apis.SysJob.StartJobForService-fm",
       "title": "job启动",
       "path": "/api/v1/job/start/:id",
       "type": "BUS",
@@ -548,7 +548,7 @@
     },
     {
       "id": 59,
-      "handle": "go-admin/app/admin/apis.SysPost.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysPost.GetPage-fm",
       "title": "岗位列表",
       "path": "/api/v1/post",
       "type": "BUS",
@@ -561,7 +561,7 @@
     },
     {
       "id": 60,
-      "handle": "go-admin/app/admin/apis.SysPost.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysPost.Get-fm",
       "title": "岗位通过id获取",
       "path": "/api/v1/post/:id",
       "type": "BUS",
@@ -574,7 +574,7 @@
     },
     {
       "id": 62,
-      "handle": "go-admin/app/admin/apis.SysConfig.GetSysConfigBySysApp-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.GetSysConfigBySysApp-fm",
       "title": "系统前端参数",
       "path": "/api/v1/app-config",
       "type": "SYS",
@@ -587,7 +587,7 @@
     },
     {
       "id": 63,
-      "handle": "go-admin/app/admin/apis.SysUser.GetProfile-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.GetProfile-fm",
       "title": "*用户信息获取",
       "path": "/api/v1/user/profile",
       "type": "SYS",
@@ -626,7 +626,7 @@
     },
     {
       "id": 68,
-      "handle": "go-admin/common/middleware/handler.Ping",
+      "handle": "gmgo-admin/common/middleware/handler.Ping",
       "title": "*用户基本信息",
       "path": "/info",
       "type": "SYS",
@@ -639,7 +639,7 @@
     },
     {
       "id": 72,
-      "handle": "go-admin/common/actions.CreateAction.func1",
+      "handle": "gmgo-admin/common/actions.CreateAction.func1",
       "title": "分类创建",
       "path": "/api/v1/syscategory",
       "type": "BUS",
@@ -652,7 +652,7 @@
     },
     {
       "id": 73,
-      "handle": "go-admin/common/actions.CreateAction.func1",
+      "handle": "gmgo-admin/common/actions.CreateAction.func1",
       "title": "内容创建",
       "path": "/api/v1/syscontent",
       "type": "BUS",
@@ -665,7 +665,7 @@
     },
     {
       "id": 76,
-      "handle": "go-admin/common/actions.CreateAction.func1",
+      "handle": "gmgo-admin/common/actions.CreateAction.func1",
       "title": "job创建",
       "path": "/api/v1/sysjob",
       "type": "BUS",
@@ -678,7 +678,7 @@
     },
     {
       "id": 80,
-      "handle": "go-admin/app/admin/apis.SysDictData.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictData.Insert-fm",
       "title": "字典数据创建",
       "path": "/api/v1/dict/data",
       "type": "BUS",
@@ -691,7 +691,7 @@
     },
     {
       "id": 81,
-      "handle": "go-admin/app/admin/apis.SysDictType.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictType.Insert-fm",
       "title": "字典类型创建",
       "path": "/api/v1/dict/type",
       "type": "BUS",
@@ -704,7 +704,7 @@
     },
     {
       "id": 82,
-      "handle": "go-admin/app/admin/apis.SysDept.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDept.Insert-fm",
       "title": "部门创建",
       "path": "/api/v1/dept",
       "type": "BUS",
@@ -730,7 +730,7 @@
     },
     {
       "id": 86,
-      "handle": "go-admin/common/middleware/handler.LogOut",
+      "handle": "gmgo-admin/common/middleware/handler.LogOut",
       "title": "*退出",
       "path": "/api/v1/logout",
       "type": "SYS",
@@ -743,7 +743,7 @@
     },
     {
       "id": 87,
-      "handle": "go-admin/app/admin/apis.SysConfig.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.Insert-fm",
       "title": "参数创建",
       "path": "/api/v1/config",
       "type": "BUS",
@@ -756,7 +756,7 @@
     },
     {
       "id": 88,
-      "handle": "go-admin/app/admin/apis.SysMenu.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.Insert-fm",
       "title": "菜单创建",
       "path": "/api/v1/menu",
       "type": "BUS",
@@ -769,7 +769,7 @@
     },
     {
       "id": 89,
-      "handle": "go-admin/app/admin/apis.SysPost.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysPost.Insert-fm",
       "title": "岗位创建",
       "path": "/api/v1/post",
       "type": "BUS",
@@ -782,7 +782,7 @@
     },
     {
       "id": 90,
-      "handle": "go-admin/app/admin/apis.SysRole.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysRole.Insert-fm",
       "title": "角色创建",
       "path": "/api/v1/role",
       "type": "BUS",
@@ -795,7 +795,7 @@
     },
     {
       "id": 91,
-      "handle": "go-admin/app/admin/apis.SysUser.InsetAvatar-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.InsetAvatar-fm",
       "title": "*用户头像编辑",
       "path": "/api/v1/user/avatar",
       "type": "SYS",
@@ -808,7 +808,7 @@
     },
     {
       "id": 92,
-      "handle": "go-admin/app/admin/apis.SysApi.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysApi.Update-fm",
       "title": "接口编辑",
       "path": "/api/v1/sys-api/:id",
       "type": "BUS",
@@ -821,7 +821,7 @@
     },
     {
       "id": 95,
-      "handle": "go-admin/common/actions.UpdateAction.func1",
+      "handle": "gmgo-admin/common/actions.UpdateAction.func1",
       "title": "分类编辑",
       "path": "/api/v1/syscategory/:id",
       "type": "BUS",
@@ -834,7 +834,7 @@
     },
     {
       "id": 96,
-      "handle": "go-admin/common/actions.UpdateAction.func1",
+      "handle": "gmgo-admin/common/actions.UpdateAction.func1",
       "title": "内容编辑",
       "path": "/api/v1/syscontent/:id",
       "type": "BUS",
@@ -847,7 +847,7 @@
     },
     {
       "id": 97,
-      "handle": "go-admin/common/actions.UpdateAction.func1",
+      "handle": "gmgo-admin/common/actions.UpdateAction.func1",
       "title": "job编辑",
       "path": "/api/v1/sysjob",
       "type": "BUS",
@@ -860,7 +860,7 @@
     },
     {
       "id": 101,
-      "handle": "go-admin/app/admin/apis.SysDictData.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictData.Update-fm",
       "title": "字典数据编辑",
       "path": "/api/v1/dict/data/:dictCode",
       "type": "BUS",
@@ -873,7 +873,7 @@
     },
     {
       "id": 102,
-      "handle": "go-admin/app/admin/apis.SysDictType.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictType.Update-fm",
       "title": "字典类型编辑",
       "path": "/api/v1/dict/type/:id",
       "type": "BUS",
@@ -886,7 +886,7 @@
     },
     {
       "id": 103,
-      "handle": "go-admin/app/admin/apis.SysDept.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDept.Update-fm",
       "title": "部门编辑",
       "path": "/api/v1/dept/:id",
       "type": "BUS",
@@ -899,7 +899,7 @@
     },
     {
       "id": 104,
-      "handle": "go-admin/app/other/apis.SysFileDir.Update-fm",
+      "handle": "gmgo-admin/app/other/apis.SysFileDir.Update-fm",
       "title": "文件夹编辑",
       "path": "/api/v1/file-dir/:id",
       "type": "BUS",
@@ -912,7 +912,7 @@
     },
     {
       "id": 105,
-      "handle": "go-admin/app/other/apis.SysFileInfo.Update-fm",
+      "handle": "gmgo-admin/app/other/apis.SysFileInfo.Update-fm",
       "title": "文件编辑",
       "path": "/api/v1/file-info/:id",
       "type": "BUS",
@@ -925,7 +925,7 @@
     },
     {
       "id": 106,
-      "handle": "go-admin/app/admin/apis.SysRole.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysRole.Update-fm",
       "title": "角色编辑",
       "path": "/api/v1/role/:id",
       "type": "BUS",
@@ -938,7 +938,7 @@
     },
     {
       "id": 107,
-      "handle": "go-admin/app/admin/apis.SysRole.Update2DataScope-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysRole.Update2DataScope-fm",
       "title": "角色数据权限修改",
       "path": "/api/v1/roledatascope",
       "type": "BUS",
@@ -951,7 +951,7 @@
     },
     {
       "id": 108,
-      "handle": "go-admin/app/admin/apis.SysConfig.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.Update-fm",
       "title": "参数编辑",
       "path": "/api/v1/config/:id",
       "type": "BUS",
@@ -964,7 +964,7 @@
     },
     {
       "id": 109,
-      "handle": "go-admin/app/admin/apis.SysMenu.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.Update-fm",
       "title": "编辑菜单",
       "path": "/api/v1/menu/:id",
       "type": "BUS",
@@ -977,7 +977,7 @@
     },
     {
       "id": 110,
-      "handle": "go-admin/app/admin/apis.SysPost.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysPost.Update-fm",
       "title": "岗位编辑",
       "path": "/api/v1/post/:id",
       "type": "BUS",
@@ -990,7 +990,7 @@
     },
     {
       "id": 111,
-      "handle": "go-admin/app/admin/apis.SysUser.UpdatePwd-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.UpdatePwd-fm",
       "title": "*用户修改密码",
       "path": "/api/v1/user/pwd",
       "type": "SYS",
@@ -1003,7 +1003,7 @@
     },
     {
       "id": 112,
-      "handle": "go-admin/common/actions.DeleteAction.func1",
+      "handle": "gmgo-admin/common/actions.DeleteAction.func1",
       "title": "分类删除",
       "path": "/api/v1/syscategory",
       "type": "BUS",
@@ -1016,7 +1016,7 @@
     },
     {
       "id": 113,
-      "handle": "go-admin/common/actions.DeleteAction.func1",
+      "handle": "gmgo-admin/common/actions.DeleteAction.func1",
       "title": "内容删除",
       "path": "/api/v1/syscontent",
       "type": "BUS",
@@ -1029,7 +1029,7 @@
     },
     {
       "id": 114,
-      "handle": "go-admin/app/admin/apis.SysLoginLog.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysLoginLog.Delete-fm",
       "title": "登录日志删除",
       "path": "/api/v1/sys-login-log",
       "type": "BUS",
@@ -1042,7 +1042,7 @@
     },
     {
       "id": 115,
-      "handle": "go-admin/app/admin/apis.SysOperaLog.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysOperaLog.Delete-fm",
       "title": "操作日志删除",
       "path": "/api/v1/sys-opera-log",
       "type": "BUS",
@@ -1055,7 +1055,7 @@
     },
     {
       "id": 116,
-      "handle": "go-admin/common/actions.DeleteAction.func1",
+      "handle": "gmgo-admin/common/actions.DeleteAction.func1",
       "title": "job删除",
       "path": "/api/v1/sysjob",
       "type": "BUS",
@@ -1068,7 +1068,7 @@
     },
     {
       "id": 117,
-      "handle": "go-admin/app/other/apis.SysChinaAreaData.Delete-fm",
+      "handle": "gmgo-admin/app/other/apis.SysChinaAreaData.Delete-fm",
       "title": "行政区删除",
       "path": "/api/v1/sys-area-data",
       "type": "BUS",
@@ -1081,7 +1081,7 @@
     },
     {
       "id": 120,
-      "handle": "go-admin/app/admin/apis.SysDictData.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictData.Delete-fm",
       "title": "字典数据删除",
       "path": "/api/v1/dict/data",
       "type": "BUS",
@@ -1094,7 +1094,7 @@
     },
     {
       "id": 121,
-      "handle": "go-admin/app/admin/apis.SysDictType.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDictType.Delete-fm",
       "title": "字典类型删除",
       "path": "/api/v1/dict/type",
       "type": "BUS",
@@ -1107,7 +1107,7 @@
     },
     {
       "id": 122,
-      "handle": "go-admin/app/admin/apis.SysDept.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysDept.Delete-fm",
       "title": "部门删除",
       "path": "/api/v1/dept/:id",
       "type": "BUS",
@@ -1120,7 +1120,7 @@
     },
     {
       "id": 123,
-      "handle": "go-admin/app/other/apis.SysFileDir.Delete-fm",
+      "handle": "gmgo-admin/app/other/apis.SysFileDir.Delete-fm",
       "title": "文件夹删除",
       "path": "/api/v1/file-dir/:id",
       "type": "BUS",
@@ -1133,7 +1133,7 @@
     },
     {
       "id": 124,
-      "handle": "go-admin/app/other/apis.SysFileInfo.Delete-fm",
+      "handle": "gmgo-admin/app/other/apis.SysFileInfo.Delete-fm",
       "title": "文件删除",
       "path": "/api/v1/file-info/:id",
       "type": "BUS",
@@ -1146,7 +1146,7 @@
     },
     {
       "id": 125,
-      "handle": "go-admin/app/admin/apis.SysConfig.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.Delete-fm",
       "title": "参数删除",
       "path": "/api/v1/config",
       "type": "BUS",
@@ -1159,7 +1159,7 @@
     },
     {
       "id": 126,
-      "handle": "go-admin/app/admin/apis.SysMenu.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysMenu.Delete-fm",
       "title": "删除菜单",
       "path": "/api/v1/menu",
       "type": "BUS",
@@ -1172,7 +1172,7 @@
     },
     {
       "id": 127,
-      "handle": "go-admin/app/admin/apis.SysPost.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysPost.Delete-fm",
       "title": "岗位删除",
       "path": "/api/v1/post/:id",
       "type": "BUS",
@@ -1185,7 +1185,7 @@
     },
     {
       "id": 128,
-      "handle": "go-admin/app/admin/apis.SysRole.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysRole.Delete-fm",
       "title": "角色删除",
       "path": "/api/v1/role",
       "type": "BUS",
@@ -1211,7 +1211,7 @@
     },
     {
       "id": 132,
-      "handle": "go-admin/app/other/router.registerMonitorRouter.func1",
+      "handle": "gmgo-admin/app/other/router.registerMonitorRouter.func1",
       "title": "健康状态",
       "path": "/api/v1/health",
       "type": "SYS",
@@ -1224,7 +1224,7 @@
     },
     {
       "id": 133,
-      "handle": "go-admin/app/admin/apis.HelloWorld",
+      "handle": "gmgo-admin/app/admin/apis.HelloWorld",
       "title": "项目默认接口",
       "path": "/",
       "type": "SYS",
@@ -1237,7 +1237,7 @@
     },
     {
       "id": 134,
-      "handle": "go-admin/app/other/apis.ServerMonitor.ServerInfo-fm",
+      "handle": "gmgo-admin/app/other/apis.ServerMonitor.ServerInfo-fm",
       "title": "服务器基本状态",
       "path": "/api/v1/server-monitor",
       "type": "SYS",
@@ -1250,7 +1250,7 @@
     },
     {
       "id": 135,
-      "handle": "go-admin/app/admin/apis.SysApi.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysApi.GetPage-fm",
       "title": "接口列表",
       "path": "/api/v1/sys-api",
       "type": "BUS",
@@ -1263,7 +1263,7 @@
     },
     {
       "id": 136,
-      "handle": "go-admin/app/admin/apis.SysApi.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysApi.Get-fm",
       "title": "接口通过id获取",
       "path": "/api/v1/sys-api/:id",
       "type": "BUS",
@@ -1276,7 +1276,7 @@
     },
     {
       "id": 137,
-      "handle": "go-admin/app/admin/apis.SysLoginLog.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysLoginLog.GetPage-fm",
       "title": "登录日志列表",
       "path": "/api/v1/sys-login-log",
       "type": "BUS",
@@ -1289,7 +1289,7 @@
     },
     {
       "id": 138,
-      "handle": "go-admin/app/other/apis.File.UploadFile-fm",
+      "handle": "gmgo-admin/app/other/apis.File.UploadFile-fm",
       "title": "文件上传",
       "path": "/api/v1/public/uploadFile",
       "type": "SYS",
@@ -1302,7 +1302,7 @@
     },
     {
       "id": 139,
-      "handle": "go-admin/app/admin/apis.SysConfig.Update2Set-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.Update2Set-fm",
       "title": "参数信息修改【参数配置】",
       "path": "/api/v1/set-config",
       "type": "BUS",
@@ -1315,7 +1315,7 @@
     },
     {
       "id": 140,
-      "handle": "go-admin/app/admin/apis.SysConfig.Get2Set-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysConfig.Get2Set-fm",
       "title": "参数获取全部【配置使用】",
       "path": "/api/v1/set-config",
       "type": "BUS",
@@ -1328,7 +1328,7 @@
     },
     {
       "id": 141,
-      "handle": "go-admin/app/admin/apis.SysUser.GetPage-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.GetPage-fm",
       "title": "管理员列表",
       "path": "/api/v1/sys-user",
       "type": "BUS",
@@ -1341,7 +1341,7 @@
     },
     {
       "id": 142,
-      "handle": "go-admin/app/admin/apis.SysUser.Get-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.Get-fm",
       "title": "管理员通过id获取",
       "path": "/api/v1/sys-user/:id",
       "type": "BUS",
@@ -1354,7 +1354,7 @@
     },
     {
       "id": 143,
-      "handle": "go-admin/app/admin/apis/tools.(*SysTable).GetSysTablesInfo-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*SysTable).GetSysTablesInfo-fm",
       "title": "",
       "path": "/api/v1/sys/tables/info",
       "type": "",
@@ -1367,7 +1367,7 @@
     },
     {
       "id": 144,
-      "handle": "go-admin/app/admin/apis/tools.(*SysTable).GetSysTables-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*SysTable).GetSysTables-fm",
       "title": "",
       "path": "/api/v1/sys/tables/info/:tableId",
       "type": "",
@@ -1380,7 +1380,7 @@
     },
     {
       "id": 145,
-      "handle": "go-admin/app/admin/apis/tools.(*SysTable).GetSysTableList-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*SysTable).GetSysTableList-fm",
       "title": "",
       "path": "/api/v1/sys/tables/page",
       "type": "",
@@ -1432,7 +1432,7 @@
     },
     {
       "id": 149,
-      "handle": "go-admin/app/admin/apis/tools.(*SysTable).InsertSysTable-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*SysTable).InsertSysTable-fm",
       "title": "",
       "path": "/api/v1/sys/tables/info",
       "type": "",
@@ -1445,7 +1445,7 @@
     },
     {
       "id": 150,
-      "handle": "go-admin/app/admin/apis.SysUser.Insert-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.Insert-fm",
       "title": "管理员创建",
       "path": "/api/v1/sys-user",
       "type": "BUS",
@@ -1458,7 +1458,7 @@
     },
     {
       "id": 151,
-      "handle": "go-admin/app/admin/apis.SysUser.Update-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.Update-fm",
       "title": "管理员编辑",
       "path": "/api/v1/sys-user",
       "type": "BUS",
@@ -1471,7 +1471,7 @@
     },
     {
       "id": 152,
-      "handle": "go-admin/app/admin/apis/tools.(*SysTable).UpdateSysTable-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*SysTable).UpdateSysTable-fm",
       "title": "",
       "path": "/api/v1/sys/tables/info",
       "type": "",
@@ -1484,7 +1484,7 @@
     },
     {
       "id": 153,
-      "handle": "go-admin/app/admin/apis.SysRole.Update2Status-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysRole.Update2Status-fm",
       "title": "",
       "path": "/api/v1/role-status",
       "type": "",
@@ -1497,7 +1497,7 @@
     },
     {
       "id": 154,
-      "handle": "go-admin/app/admin/apis.SysUser.ResetPwd-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.ResetPwd-fm",
       "title": "",
       "path": "/api/v1/user/pwd/reset",
       "type": "",
@@ -1510,7 +1510,7 @@
     },
     {
       "id": 155,
-      "handle": "go-admin/app/admin/apis.SysUser.UpdateStatus-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.UpdateStatus-fm",
       "title": "",
       "path": "/api/v1/user/status",
       "type": "",
@@ -1523,7 +1523,7 @@
     },
     {
       "id": 156,
-      "handle": "go-admin/app/admin/apis.SysUser.Delete-fm",
+      "handle": "gmgo-admin/app/admin/apis.SysUser.Delete-fm",
       "title": "管理员删除",
       "path": "/api/v1/sys-user",
       "type": "BUS",
@@ -1536,7 +1536,7 @@
     },
     {
       "id": 157,
-      "handle": "go-admin/app/admin/apis/tools.(*SysTable).DeleteSysTables-fm",
+      "handle": "gmgo-admin/app/admin/apis/tools.(*SysTable).DeleteSysTables-fm",
       "title": "",
       "path": "/api/v1/sys/tables/info/:tableId",
       "type": "",

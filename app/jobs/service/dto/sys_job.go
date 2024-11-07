@@ -3,10 +3,10 @@ package dto
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-admin-team/go-admin-core/sdk/api"
-	"go-admin/app/jobs/models"
+	"gmgo-admin/app/jobs/models"
 
-	"go-admin/common/dto"
-	common "go-admin/common/models"
+	"gmgo-admin/common/dto"
+	common "gmgo-admin/common/models"
 )
 
 type SysJobSearch struct {

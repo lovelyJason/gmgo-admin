@@ -10,7 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"io/ioutil"
-	"log"
 	"regexp"
 	"strings"
 
@@ -19,17 +18,18 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/runtime"
 	"github.com/go-admin-team/go-admin-core/storage"
 
-	"go-admin/common/models"
+	"gmgo-admin/common/models"
 )
 
 type SysApi struct {
-	Id     primitive.ObjectID `bson:"_id" json:"id"`
-	ApiId  int                `bson:"apiId" json:"apiId"`
-	Handle string             `bson:"handle" json:"handle"`
-	Title  string             `bson:"title" json:"title"`
-	Path   string             `bson:"path" json:"path"`
-	Action string             `bson:"action" json:"action"`
-	Type   string             `bson:"type" json:"type"`
+	Id         primitive.ObjectID `bson:"_id" json:"id"`
+	ApiId      int                `bson:"apiId" json:"apiId"`
+	Handle     string             `bson:"handle" json:"handle"`
+	Title      string             `bson:"title" json:"title"`
+	Path       string             `bson:"path" json:"path"`
+	Action     string             `bson:"action" json:"action"`
+	Type       string             `bson:"type" json:"type"`             // 接口类型,BUS:业务接口（可以用来分配权限的），SYS:系统接口
+	Modifiable bool               `bson:"modifiable" json:"modifiable"` // 是否可修改
 	models.ModelTime
 	models.ControlBy
 }
@@ -146,9 +146,8 @@ func (e *SysApi) List(db *mongo.Database, filter SysApi, pageIndex, pageSize int
 	return result, total, nil
 }
 
-func (e *SysApi) GetOne(ctx context.Context, db *mongo.Database, id primitive.ObjectID, data *SysApi) error {
-	filter := bson.M{"_id": id}
-	log.Println("filter", id.Hex())
+func (e *SysApi) GetOne(ctx context.Context, db *mongo.Database, apiId int, data *SysApi) error {
+	filter := bson.M{"apiId": apiId}
 	err := db.Collection(e.TableName()).FindOne(ctx, filter).Decode(&data)
 	if err != nil {
 		return err

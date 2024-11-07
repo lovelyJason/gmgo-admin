@@ -9,10 +9,10 @@ import (
 	_ "github.com/go-admin-team/go-admin-core/sdk/pkg/response"
 
 	sdkConfig "github.com/go-admin-team/go-admin-core/sdk/config"
-	"go-admin/app/admin/models"
-	"go-admin/app/admin/service"
-	"go-admin/app/admin/service/dto"
-	"go-admin/common/actions"
+	"gmgo-admin/app/admin/models"
+	"gmgo-admin/app/admin/service"
+	"gmgo-admin/app/admin/service/dto"
+	"gmgo-admin/common/actions"
 )
 
 type SysApi struct {
@@ -50,7 +50,7 @@ func (e SysApi) GetPage(c *gin.Context) {
 	//数据权限检查
 	p := actions.GetPermissionFromContext(c)
 	var count int64
-	list, count, err := s.GetPageWithMongo(&req, p)
+	list, count, err := s.GetPage(&req, p)
 	if err != nil {
 		e.Error(500, err, "查询失败")
 		return
@@ -87,6 +87,30 @@ func (e SysApi) Get(c *gin.Context) {
 		return
 	}
 	e.OK(object, "查询成功")
+}
+
+// Insert 创建接口管理
+// @Summary 创建接口管理
+// @Description 创建接口管理
+// @Tags 接口管理
+// @Success 200 {object} response.Response{data=models.SysApi} "{"code": 200, "data": [...]}"
+// @Router /api/v1/sys-api/add[post]
+// @Security Bearer
+func (e SysApi) Insert(c *gin.Context) {
+	s := service.SysApi{}
+	req := dto.SysApiInsertReq{}
+	err := e.MakeContext(c).
+		MakeMongo().
+		Bind(&req, binding.JSON).
+		MakeService(&s.Service).
+		Errors
+	if err != nil {
+		e.Logger.Error(err)
+		e.Error(500, err, err.Error())
+		return
+	}
+	req.SetCreateBy(user.GetUserId(c))
+
 }
 
 // Update 修改接口管理

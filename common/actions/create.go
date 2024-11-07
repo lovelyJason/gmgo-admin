@@ -9,8 +9,8 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth/user"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/response"
 
-	"go-admin/common/dto"
-	"go-admin/common/models"
+	"gmgo-admin/common/dto"
+	"gmgo-admin/common/models"
 )
 
 // CreateAction 通用新增动作

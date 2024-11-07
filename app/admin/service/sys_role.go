@@ -18,8 +18,8 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/service"
 	"gorm.io/gorm"
 
-	"go-admin/app/admin/models"
-	"go-admin/app/admin/service/dto"
+	"gmgo-admin/app/admin/models"
+	"gmgo-admin/app/admin/service/dto"
 )
 
 type SysRole struct {

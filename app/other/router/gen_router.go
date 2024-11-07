@@ -3,15 +3,15 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	jwt "github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth"
-	"go-admin/app/admin/apis"
-	"go-admin/app/other/apis/tools"
+	"gmgo-admin/app/admin/apis"
+	"gmgo-admin/app/other/apis/tools"
 )
 
 func init() {
 	routerCheckRole = append(routerCheckRole, sysNoCheckRoleRouter, registerDBRouter, registerSysTableRouter)
 }
 
-func sysNoCheckRoleRouter(v1 *gin.RouterGroup ,authMiddleware *jwt.GinJWTMiddleware) {
+func sysNoCheckRoleRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 	r1 := v1.Group("")
 	{
 		sys := apis.System{}

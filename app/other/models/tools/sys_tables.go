@@ -1,7 +1,7 @@
 package tools
 
 import (
-	common "go-admin/common/models"
+	common "gmgo-admin/common/models"
 	"strings"
 
 	"gorm.io/gorm"

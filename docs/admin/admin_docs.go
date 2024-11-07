@@ -4362,7 +4362,7 @@ var SwaggerInfoadmin = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "go-admin API",
+	Title:            "gmgo-admin API",
 	Description:      "基于Gin + Vue + Element UI的前后端分离权限管理系统的接口文档",
 	InfoInstanceName: "admin",
 	SwaggerTemplate:  docTemplateadmin,

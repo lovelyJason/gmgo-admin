@@ -8,11 +8,11 @@ import (
 	sdkConfig "github.com/go-admin-team/go-admin-core/sdk/config"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg"
 	"github.com/spf13/cobra"
-	"go-admin/cmd/migrate/migration"
-	_ "go-admin/cmd/migrate/migration/version"
-	_ "go-admin/cmd/migrate/migration/version-local"
-	"go-admin/common/database"
-	"go-admin/common/models"
+	"gmgo-admin/cmd/migrate/migration"
+	_ "gmgo-admin/cmd/migrate/migration/version"
+	_ "gmgo-admin/cmd/migrate/migration/version-local"
+	"gmgo-admin/common/database"
+	"gmgo-admin/common/models"
 	"strconv"
 	"text/template"
 	"time"
@@ -26,7 +26,7 @@ var (
 	StartCmd  = &cobra.Command{
 		Use:     "migrate",
 		Short:   "Initialize the database",
-		Example: "go-admin migrate -c config/settings.yml",
+		Example: "gmgo-admin migrate -c config/settings.yml",
 		Run: func(cmd *cobra.Command, args []string) {
 			run()
 		},

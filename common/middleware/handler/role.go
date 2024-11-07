@@ -1,6 +1,6 @@
 package handler
 
-import "go-admin/common/models"
+import "gmgo-admin/common/models"
 
 type SysRole struct {
 	RoleId    int    `bson:"roleId" json:"roleId" gorm:"primaryKey;autoIncrement"` // 角色编码

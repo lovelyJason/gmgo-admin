@@ -1,9 +1,9 @@
 package dto
 
 import (
-	"go-admin/app/admin/models"
-	"go-admin/common/dto"
-	common "go-admin/common/models"
+	"gmgo-admin/app/admin/models"
+	"gmgo-admin/common/dto"
+	common "gmgo-admin/common/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -79,10 +79,10 @@ func (s *SysApiUpdateReq) GetId() interface{} {
 
 // SysApiGetReq 功能获取请求参数
 type SysApiGetReq struct {
-	Id string `uri:"id"` // 确保是string，因为这里是用于gin的binding的
+	Id int `uri:"id"` // 确保是int，因为这里是用于gin的binding的。这里是apiId
 }
 
-func (s *SysApiGetReq) GetId() string {
+func (s *SysApiGetReq) GetId() int {
 	return s.Id
 }
 

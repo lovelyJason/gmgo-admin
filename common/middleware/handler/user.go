@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"go-admin/common/models"
+	"gmgo-admin/common/models"
 	"gorm.io/gorm"
 )
 
