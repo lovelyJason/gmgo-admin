@@ -15,7 +15,7 @@
 
 
 
-[在线文档](https://www.go-admin.pro)
+[在线文档](https://www.go-admin.pro): 这是go-admin项目的文档，本项目基于它，但是更换了数据库驱动，所以部分地方会略有不同，请看后文的数据库初始化
 
 [前端项目](https://github.com/go-admin-team/go-admin-ui)
 
@@ -126,10 +126,9 @@ cd goadmin
 
 ```bash
 # 获取后端代码
-git clone https://github.com/go-admin-team/go-admin.git
-
+git clone https://github.com/lovelyJason/gmgo-admin.git
 # 获取前端代码
-git clone https://github.com/go-admin-team/go-admin-ui.git
+git clone https://github.com/lovelyJason/gmgo-antd-ui.git
 
 ```
 
@@ -148,7 +147,7 @@ go mod tidy
 go build
 
 # 修改配置 
-# 文件路径  go-admin/config/settings.yml
+# 文件路径  go-admin/config/settings.yml, 也可以新建settings.dev.yml，这是本地开发配置，不会推送到远程仓库
 vi ./config/settings.yml
 
 # 1. 配置文件中修改数据库信息 
@@ -156,44 +155,24 @@ vi ./config/settings.yml
 # 2. 确认log路径
 ```
 
-⚠️注意 在windows环境如果没有安装中CGO，会出现这个问题；
-
-```bash
-E:\go-admin>go build
-# github.com/mattn/go-sqlite3
-cgo: exec /missing-cc: exec: "/missing-cc": file does not exist
-```
-
-or
-
-```bash
-D:\Code\go-admin>go build
-# github.com/mattn/go-sqlite3
-cgo: exec gcc: exec: "gcc": executable file not found in %PATH%
-```
-
-[解决cgo问题进入](https://doc.go-admin.dev/zh-CN/guide/faq#cgo-%E7%9A%84%E9%97%AE%E9%A2%98)
-
-
 #### 初始化数据库，以及服务启动
 
 ``` bash
 # 首次配置需要初始化数据库资源信息
-# macOS or linux 下使用
-$ ./go-admin migrate -c config/settings.dev.yml
-
-# ⚠️注意:windows 下使用
-$ go-admin.exe migrate -c config/settings.dev.yml
+复制config/db.js里面的代码到mongo的shell环境内执行，或者数据库连接工具如navicat里面新建查询，执行数据库初始化操作
 
 
 # 启动项目，也可以用IDE进行调试
 # macOS or linux 下使用
-$ ./go-admin server -c config/settings.yml
+$ ./go-admin server -c config/settings.yml # 或者settings.dev.yml
 
 
 # ⚠️注意:windows 下使用
 $ go-admin.exe server -c config/settings.yml
 ```
+
+![image](https://github.com/user-attachments/assets/ddf9bff3-9ceb-44f8-89f1-77cbcfc54dd8)
+
 
 #### sys_api 表的数据如何添加
 
@@ -232,15 +211,14 @@ env GOOS=linux GOARCH=amd64 go build main.go
 
 ### UI交互端启动说明
 
+这是一个标准的vben5.2的项目，参考vben官网即可：https://doc.vben.pro/guide/introduction/quick-start.html
+
 ```bash
 # 安装依赖
-npm install
-
-# 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题
-npm install --registry=https://registry.npmmirror.com
+pnpm i
 
 # 启动服务
-npm run dev
+pnpm run dev:antd
 ```
 
 
