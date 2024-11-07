@@ -11,6 +11,9 @@
 
 ![image](https://github.com/user-attachments/assets/4f376450-1ba8-4443-850d-98449e6d61c8)
 
+![image](https://github.com/user-attachments/assets/d92c77db-9e42-49ab-8c25-3d6eab41a700)
+
+
 
 [在线文档](https://www.go-admin.pro)
 
