@@ -1,7 +1,10 @@
 package apis
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/go-admin-team/go-admin-core/sdk"
+	"github.com/spf13/cast"
 	"gmgo-admin/app/admin/models"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
@@ -166,7 +169,7 @@ func (e SysUser) Update(c *gin.Context) {
 // @Tags 用户
 // @Param userId path int true "userId"
 // @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /api/v1/sys-user/del/{userId} [post]
+// @Router /api/v1/sys-user/del [post]
 // @Security Bearer
 func (e SysUser) Delete(c *gin.Context) {
 	s := service.SysUser{}
@@ -179,6 +182,13 @@ func (e SysUser) Delete(c *gin.Context) {
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
+		return
+	}
+
+	if req.UserId == 1 {
+		msg := "不允许删除超级管理员"
+		err := errors.New(msg)
+		e.Error(500, err, msg)
 		return
 	}
 
@@ -268,6 +278,13 @@ func (e SysUser) UpdateStatus(c *gin.Context) {
 		return
 	}
 
+	if req.UserId == 1 {
+		msg := "不允许修改超级管理员状态"
+		err := errors.New(msg)
+		e.Error(500, err, msg)
+		return
+	}
+
 	req.SetUpdateBy(user.GetUserId(c))
 
 	//数据权限检查
@@ -278,6 +295,14 @@ func (e SysUser) UpdateStatus(c *gin.Context) {
 		e.Logger.Error(err)
 		return
 	}
+	// 存到内存或redis，以免读表查询用户是否禁用
+	adapterCache := sdk.Runtime.GetCacheAdapter()
+	if req.Status == "1" {
+		adapterCache.Set(cast.ToString(req.GetId()), "disabled", 3600)
+	} else {
+		adapterCache.Del(cast.ToString(req.GetId()))
+	}
+
 	e.OK(req.GetId(), "更新成功")
 }
 

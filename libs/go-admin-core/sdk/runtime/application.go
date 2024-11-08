@@ -231,7 +231,7 @@ func (e *Application) SetCacheAdapter(c storage.AdapterCache) {
 	e.cache = c
 }
 
-// GetCacheAdapter 获取缓存
+// GetCacheAdapter 获取缓存, 返回的是config/cache.Setup返回的redis或Memory实例
 func (e *Application) GetCacheAdapter() storage.AdapterCache {
 	return NewCache("", e.cache, "")
 }

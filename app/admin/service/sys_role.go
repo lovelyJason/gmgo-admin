@@ -10,10 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 
-	"github.com/go-admin-team/go-admin-core/sdk/config"
-	"gorm.io/gorm/clause"
-
 	"github.com/casbin/casbin/v2"
+	"github.com/go-admin-team/go-admin-core/sdk/config"
 
 	"github.com/go-admin-team/go-admin-core/sdk/service"
 	"gorm.io/gorm"
@@ -301,32 +299,21 @@ func (e *SysRole) Update(c *dto.SysRoleUpdateReq, cb *casbin.SyncedEnforcer) err
 // Remove 删除SysRole
 func (e *SysRole) Remove(c *dto.SysRoleDeleteReq, cb *casbin.SyncedEnforcer) error {
 	var err error
-	tx := e.Orm
-	if config.DatabaseConfig.Driver != "sqlite3" {
-		tx := e.Orm.Begin()
-		defer func() {
-			if err != nil {
-				tx.Rollback()
-			} else {
-				tx.Commit()
-			}
-		}()
+	roleModel := &models.SysRole{}
+	ctx := context.Background()
+	filter := bson.M{
+		"roleId": c.RoleId,
 	}
-	var model = models.SysRole{}
-	tx.Preload("SysMenu").Preload("SysDept").First(&model, c.GetId())
-	//删除 SysRole 时，同时删除角色所有 关联其它表 记录 (SysMenu 和 SysMenu)
-	db := tx.Select(clause.Associations).Delete(&model)
-
-	if err = db.Error; err != nil {
-		e.Log.Errorf("db error:%s", err)
+	err = roleModel.GetOne(ctx, e.Mongo, filter, roleModel)
+	if err != nil {
 		return err
 	}
-	if db.RowsAffected == 0 {
-		return errors.New("无权更新该数据")
+	err = roleModel.SoftDelByRoleId(ctx, e.Mongo, c.RoleId)
+	if err != nil {
+		return err
 	}
-
 	// 清除 sys_casbin_rule 权限表里 当前角色的所有记录
-	_, _ = cb.RemoveFilteredPolicy(0, model.RoleKey)
+	_, _ = cb.RemoveFilteredPolicy(0, roleModel.RoleKey)
 
 	return nil
 }

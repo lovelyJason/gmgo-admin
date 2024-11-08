@@ -1,6 +1,7 @@
 package apis
 
 import (
+	"errors"
 	"fmt"
 	"gmgo-admin/common/global"
 	"net/http"
@@ -190,13 +191,20 @@ func (e SysRole) Delete(c *gin.Context) {
 	s := new(service.SysRole)
 	req := dto.SysRoleDeleteReq{}
 	err := e.MakeContext(c).
-		MakeOrm().
+		MakeMongo().
 		Bind(&req, binding.JSON).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, fmt.Sprintf("删除角色 %v 失败，\r\n失败信息 %s", req.Ids, err.Error()))
+		return
+	}
+
+	if req.RoleId == 1 {
+		msg := "不允许删除超级管理员"
+		err := errors.New(msg)
+		e.Error(500, err, msg)
 		return
 	}
 
@@ -232,6 +240,12 @@ func (e SysRole) Update2Status(c *gin.Context) {
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, fmt.Sprintf("更新角色状态失败，失败原因：%s ", err.Error()))
+		return
+	}
+	if req.RoleId == 1 {
+		msg := "不允许修改超级管理员状态"
+		err := errors.New(msg)
+		e.Error(500, err, msg)
 		return
 	}
 	req.SetUpdateBy(user.GetUserId(c))

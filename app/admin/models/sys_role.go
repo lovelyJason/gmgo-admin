@@ -64,6 +64,10 @@ func (e *SysRole) List(db *mongo.Database, filter SysRole, pageIndex, pageSize i
 	if pageSize <= 0 {
 		pageSize = 20 // 默认值
 	}
+	query["$or"] = []bson.M{
+		{"deletedAt": bson.M{"$exists": false}},
+		{"deletedAt": nil},
+	}
 	skip := (pageIndex - 1) * pageSize
 
 	total, _ = db.Collection(e.TableName()).CountDocuments(ctx, query)
@@ -71,6 +75,7 @@ func (e *SysRole) List(db *mongo.Database, filter SysRole, pageIndex, pageSize i
 	findOptions := options.Find()
 	findOptions.SetSkip(int64(skip))
 	findOptions.SetLimit(int64(pageSize))
+	findOptions.SetSort(bson.M{"roleSort": 1})
 
 	cursor, err := db.Collection(e.TableName()).Find(ctx, query, findOptions)
 	if err != nil {
@@ -187,7 +192,7 @@ func (e *SysRole) GetOneByRoleId(ctx context.Context, db *mongo.Database, roleId
 	return nil
 }
 
-// 事务操作，插入角色的时候再插入角色菜单表
+// InserOneWithRoleMenu 事务操作，插入角色的时候再插入角色菜单表
 func (e *SysRole) InserOneWithRoleMenu(ctx context.Context, db *mongo.Database, filter SysRole) error {
 	// 开启事务
 	session, err := db.Client().StartSession()
@@ -239,7 +244,7 @@ func (e *SysRole) InserOneWithRoleMenu(ctx context.Context, db *mongo.Database, 
 	return nil
 }
 
-// 文档引用版
+// InsertOne 文档引用版
 func (e *SysRole) InsertOne(ctx context.Context, db *mongo.Database, filter bson.M) (int, error) {
 	collection := db.Collection(e.TableName())
 	pipeline := mongo.Pipeline{
@@ -274,7 +279,7 @@ func (e *SysRole) InsertOne(ctx context.Context, db *mongo.Database, filter bson
 	return newRoleId, nil
 }
 
-// 关联表版
+// UpdateRoleMenuWithRoleId 关联表版
 func (e *SysRole) UpdateRoleMenuWithRoleId(ctx context.Context, db *mongo.Database, roleId int, filter bson.M, menuIds []int) error {
 	session, err := db.Client().StartSession()
 	if err != nil {
@@ -320,12 +325,26 @@ func (e *SysRole) UpdateRoleMenuWithRoleId(ctx context.Context, db *mongo.Databa
 	return nil
 }
 
-// 文档引用版
+// UpdateByRoleId 文档引用版
 func (e *SysRole) UpdateByRoleId(ctx context.Context, db *mongo.Database, roleId int, filter bson.M) error {
 	_, err := db.Collection(e.TableName()).UpdateOne(ctx, bson.M{
 		"roleId": roleId,
 	}, bson.M{
 		"$set": filter,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *SysRole) SoftDelByRoleId(ctx context.Context, db *mongo.Database, roleId int) error {
+	now := time.Now()
+
+	_, err := db.Collection(e.TableName()).UpdateOne(ctx, bson.M{"roleId": roleId}, bson.M{
+		"$set": bson.M{
+			"deletedAt": now,
+		},
 	})
 	if err != nil {
 		return err

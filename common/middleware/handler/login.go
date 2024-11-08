@@ -41,7 +41,11 @@ func (u *Login) GetUserWithMongo(db *mongo.Database) (user SysUser, role SysRole
 	// 查找用户
 	err = userCollection.FindOne(context.TODO(), bson.M{
 		"username": u.Username,
-		"status":   "2",
+		"status":   "2", // 1禁用 2启用
+		"$or": []bson.M{
+			{"deletedAt": bson.M{"$exists": false}},
+			{"deletedAt": nil},
+		},
 	}).Decode(&user)
 
 	if err != nil {

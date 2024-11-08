@@ -17,7 +17,7 @@ import (
 
 // Setup 配置storage组件
 func Setup() {
-	//4. 设置缓存
+	//4. 设置缓存, 包括redis,memory
 	cacheAdapter, err := config.CacheConfig.Setup()
 	if err != nil {
 		log.Fatalf("cache setup error, %s\n", err.Error())

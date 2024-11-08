@@ -63,6 +63,7 @@ func (m *Memory) getItem(key string) (*item, error) {
 	}
 }
 
+// Set 这里只能存储可字符串化的数据
 func (m *Memory) Set(key string, val interface{}, expire int) error {
 	s, err := cast.ToStringE(val)
 	if err != nil {

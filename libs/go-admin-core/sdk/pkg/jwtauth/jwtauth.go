@@ -3,7 +3,9 @@ package jwtauth
 import (
 	"crypto/rsa"
 	"errors"
+	"github.com/go-admin-team/go-admin-core/sdk"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg"
+	"github.com/spf13/cast"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -439,6 +441,15 @@ func (mw *GinJWTMiddleware) middlewareImpl(c *gin.Context) {
 		return
 	}
 
+	userId, _ := claims.Identity()
+
+	adapterCache := sdk.Runtime.GetCacheAdapter()
+	userStatus, _ := adapterCache.Get(cast.ToString(userId))
+	// FIXME:这里有点问题就是除非触发开关禁用，如果一开始用户就是禁用的，没去数据库拉数据不知道
+	if userStatus == "disabled" {
+		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(errors.New("您已被禁用，请联系管理员"), c))
+		return
+	}
 	c.Next()
 }
 

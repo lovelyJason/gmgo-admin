@@ -186,7 +186,8 @@ func (s *SysRoleGetReq) GetId() interface{} {
 }
 
 type SysRoleDeleteReq struct {
-	Ids []int `json:"ids"`
+	Ids    []int `json:"ids"`
+	RoleId int   `url:"roleId"`
 }
 
 func (s *SysRoleDeleteReq) GetId() interface{} {

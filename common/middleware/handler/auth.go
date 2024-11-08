@@ -76,6 +76,7 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 	var status = "2"
 	var msg = "登录成功"
 	var username = ""
+	// 记录日志
 	defer func() {
 		LoginLogToDB(c, status, msg, username)
 	}()
