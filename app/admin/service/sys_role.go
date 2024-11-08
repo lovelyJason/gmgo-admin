@@ -35,7 +35,11 @@ func (e *SysRole) GetPage(c *dto.SysRoleGetPageReq) ([]*models.SysRole, int64, e
 	var err error
 	//var data models.SysRole
 	model := &models.SysRole{}
-	filter := models.SysRole{}
+	filter := models.SysRole{
+		RoleName: c.RoleName,
+		RoleKey:  c.RoleKey,
+		Status:   c.Status,
+	}
 
 	//err = e.Orm.Model(&data).Preload("SysMenu").
 	//	Scopes(

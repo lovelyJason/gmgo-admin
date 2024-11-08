@@ -100,7 +100,7 @@ func (e *SysUser) List(db *mongo.Database, filter SysUser, pageIndex, pageSize i
 	var ctx = context.Background()
 	query := bson.M{}
 	if filter.Username != "" {
-		query["username"] = filter.Username
+		query["username"] = bson.M{"$regex": filter.Username, "$options": "i"}
 	}
 	if filter.Phone != "" {
 		query["phone"] = filter.Phone

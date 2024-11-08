@@ -108,10 +108,10 @@ func (e *SysApi) List(db *mongo.Database, filter SysApi, pageIndex, pageSize int
 		query["type"] = filter.Type
 	}
 	if filter.Title != "" {
-		query["title"] = filter.Title
+		query["title"] = bson.M{"$regex": filter.Title, "$options": "i"} // 忽略大小写的正则匹配
 	}
 	if filter.Path != "" {
-		query["path"] = filter.Path
+		query["path"] = bson.M{"$regex": filter.Path, "$options": "i"}
 	}
 	if filter.Action != "" {
 		query["action"] = filter.Action

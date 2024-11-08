@@ -24,7 +24,11 @@ func (e *SysUser) GetPage(c *dto.SysUserGetPageReq, p *actions.DataPermission) (
 	var err error
 	//var data models.SysUser
 	model := &models.SysUser{}
-	filter := models.SysUser{}
+	filter := models.SysUser{
+		Username: c.Username,
+		Phone:    c.Phone,
+		Status:   c.Status,
+	}
 	//err = e.Orm.Debug().Preload("Dept").
 	//	Scopes(
 	//		cDto.MakeCondition(c.GetNeedSearch()),

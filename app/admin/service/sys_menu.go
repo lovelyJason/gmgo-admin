@@ -48,6 +48,12 @@ func (e *SysMenu) getPage(c *dto.SysMenuGetPageReq, list *[]models.SysMenu) *Sys
 	//var data models.SysMenu
 	model := &models.SysMenu{}
 	filter := bson.M{}
+	if c.Title != "" {
+		filter["title"] = bson.M{"$regex": c.Title, "$options": "i"}
+	}
+	if c.Visible != "" {
+		filter["visible"] = c.Visible
+	}
 	ctx := context.Background()
 
 	//err = e.Orm.Model(&data).

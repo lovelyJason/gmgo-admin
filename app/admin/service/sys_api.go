@@ -24,7 +24,10 @@ func (e *SysApi) GetPage(c *dto.SysApiGetPageReq, p *actions.DataPermission) ([]
 	//var data models.SysApi
 	model := &models.SysApi{}
 	filter := models.SysApi{
-		Type: c.Type,
+		Title:  c.Title,
+		Path:   c.Path,
+		Action: c.Action,
+		Type:   c.Type,
 	}
 	list, total, err := model.List(e.Mongo, filter, c.PageIndex, c.PageSize)
 	if err != nil {

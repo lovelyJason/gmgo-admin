@@ -53,7 +53,10 @@ func (e *SysRole) List(db *mongo.Database, filter SysRole, pageIndex, pageSize i
 	var ctx = context.Background()
 	query := bson.M{}
 	if filter.RoleName != "" {
-		query["roleName"] = filter.RoleName
+		query["roleName"] = bson.M{"$regex": filter.RoleName, "$options": "i"}
+	}
+	if filter.RoleKey != "" {
+		query["roleKey"] = filter.RoleKey
 	}
 	if filter.Status != "" {
 		query["status"] = filter.Status
